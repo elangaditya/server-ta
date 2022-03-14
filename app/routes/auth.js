@@ -29,6 +29,7 @@ router.post('/register', async (req, res) => {
 
     // Save
     const user = await User.create({
+        name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
     });
@@ -59,12 +60,15 @@ router.post('/login', async (req, res) => {
     // Password Compare
     const validPass = await bcrypt.compare(req.body.password, user.password);
     if (!validPass) return res.status(400).send('Invalid password');
+    console.log(user);
 
     // Auth-token
-    const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
-        expiresIn: '1h',
+    const token = jwt.sign({ id: user.id, name: user.name }, process.env.TOKEN_SECRET, {
+        expiresIn: '5m',
     });
-    res.header('auth-token', token).send(token);
+    res.cookie('auth_token', token, {
+        httpOnly: true, secure: false,
+    }).redirect('/api/home');
 });
 
 // GOOGLE ROUTE

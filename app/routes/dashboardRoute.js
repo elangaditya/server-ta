@@ -1,9 +1,17 @@
 const router = require('express').Router();
 const db = require('../models');
+const validate = require('./tokenValidation');
 
 const Location = db.location;
 const Device = db.device;
 // const jwt = require('jsonwebtoken');
+
+router.get('/home', validate, async (req, res) => {
+    console.log(req.user);
+    res.render('pages/home', {
+        user: req.user,
+    });
+});
 
 router.get('/dashboard/:deviceID/data', async (req, res) => {
     const locations = await Location.findAll({

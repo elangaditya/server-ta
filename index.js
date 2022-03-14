@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ const client = mqtt.connect(connectUrl, {
 });
 
 const app = express();
+app.use(cookieParser());
 
 const corsOptions = {
     origin: 'http://localhost:8081',
@@ -46,7 +48,7 @@ const db = require('./app/models');
 
 const Location = db.location;
 const Device = db.device;
-db.sequelize.sync({ force: true });
+// db.sequelize.sync({ force: true });
 
 // Public
 app.use(express.static('public'));
