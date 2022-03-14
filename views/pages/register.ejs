@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+    <title>Register</title>
+</head>
+
+<body>
+    <br><br><br><br>
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="text-center">
+                        <a href="RegisterUser.html" class="btn btn-light btn-user font-weight-bolder pl-5 pr-5">Car User</a> <a href="RegisterPolice.html" class="btn btn-primary btn-user font-weight-bolder pl-5 pr-5">Police</a>
+                        <br><br>
+                        <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" style="width: 7em;">
+                        <br>
+                        Innovation distinguishes between a leader and a follower
+                    </div>
+                    
+                    <br>
+                    <form name="frm" action="/auth/register" method="POST">
+                        <div class="form-group">
+                            <input type="name" class="form-control p-4" id="name" name="name" placeholder="Full Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control p-4" id="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control p-4" id="password" name="password" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control p-4" name="password_confirm" id="password_confirm" placeholder="Confirm Password">
+                        </div>
+
+                        <br>
+                        <div class="text-center">
+                            <input type="submit" class="btn btn-primary btn-user font-weight-bolder pl-5 pr-5">
+                        </div>
+                        
+                    </form>
+                    
+                    <nav class="navbar navbar-light bg-light text-center fixed-top">
+                        <div class="container-fluid p-3">
+                            <a class="font-weight-bold" href="index.html"> < Back</a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <!-- Scripts -->
+    <%- include('../partials/script') %> 
+
+</body>
+
+</html>

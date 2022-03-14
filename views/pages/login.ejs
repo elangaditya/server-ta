@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+    <title>Login</title>
+</head>
+
+<body>
+    <br><br><br>
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="text-center">
+                        <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" style="width: 7em;">
+                    </div>
+                    <br><br>
+                    <form name="frm" action="/auth/login" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control p-4" id="Email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control p-4" id="Password" placeholder="Password">
+                        </div>
+                        <div class="text-center">
+                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                        </div>
+                        <br>
+                        <div class="text-center">
+                            <input type="submit" name="submit" value="LOGIN" class="btn btn-primary btn-user font-weight-bolder pl-5 pr-5">
+                        </div>
+                    </form>
+                    
+                    <nav class="navbar navbar-dark bg-primary text-center justify-content-center fixed-bottom">
+                            <div class="col-md-6 text-white text-center p-3">
+                                Do not have an account? <a class="text-white font-weight-bold" href="/auth/register">Create Account!</a>
+                            </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Scripts -->
+    <%- include('../partials/script') %> 
+
+</body>
+
+</html> 

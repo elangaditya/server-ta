@@ -1,0 +1,10 @@
+<% locations.slice().reverse().forEach(function(location) { %>
+    <div class="row text-center">
+    <div class="col-5">
+        <%= location.createdAt.toLocaleDateString() %> <%= location.createdAt.toLocaleTimeString() %>  <br>
+    </div>
+    <div class="col-7" id="location-data">
+        <%= location.lat %>, <%= location.long %><br>
+    </div>
+</div>
+<% }) %> 
