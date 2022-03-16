@@ -2,16 +2,15 @@ const mqtt = require('mqtt');
 const { locationHandler } = require('./messageHandler');
 
 class MqttHandler {
-    constructor() {
+    constructor(id) {
         this.mqttClient = null;
         this.host = 'mqtt://128.199.77.62';
-        this.clientId = 'mqtt_backend_server';
-        this.topic = ['device/#'];
+        this.topic = 'device/#';
+        this.clientId = id;
     }
 
     connect() {
         this.mqttClient = mqtt.connect(this.host, {
-            clientId: this.clientId,
             port: 1883,
             clean: true,
             connectTimeout: 4000,
@@ -26,6 +25,14 @@ class MqttHandler {
         });
 
         this.mqttClient.on('message', locationHandler);
+    }
+
+    sendMessage(message, topic) {
+        console.log(`sending: ${JSON.stringify(message)} \nto: ${topic}`);
+        this.mqttClient.publish(topic, JSON.stringify(message), {
+            qos: 0, retain: false,
+        });
+        // this.mqttClient.end();
     }
 }
 

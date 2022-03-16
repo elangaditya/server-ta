@@ -71,7 +71,7 @@ app.listen(PORT, () => {
 
 // MQTT
 // eslint-disable-next-line no-unused-vars
-const mqttClient = require('./mqttClient');
+const mqttClient = require('./mqtt/mqttClient');
 
 // const topic = 'device/#';
 // client.on('connect', () => {

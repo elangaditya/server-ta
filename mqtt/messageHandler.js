@@ -12,22 +12,25 @@ const locationHandler = async (topic, payload) => {
     });
     console.log(device);
 
-    const locationData = JSON.parse(payload);
-    // eslint-disable-next-line prefer-destructuring
-    locationData.device_imei = topicArray[1];
-    const location = await Location.create(locationData);
-    console.log(locationData);
+    const { eventName } = JSON.parse(payload);
+    if (eventName === 'TrackerData') {
+        const locationData = JSON.parse(payload);
+        // eslint-disable-next-line prefer-destructuring
+        locationData.device_imei = topicArray[1];
+        const location = await Location.create(locationData);
+        console.log(locationData);
 
-    Device.update(
-        { mode: locationData.mode },
-        { where: { imei: topicArray[1] } },
-    );
+        Device.update(
+            { mode: locationData.mode },
+            { where: { imei: topicArray[1] } },
+        );
 
-    try {
-        const savedLocation = await location.save();
-        console.log(savedLocation);
-    } catch (err) {
-        console.log('Error');
+        try {
+            const savedLocation = await location.save();
+            console.log(savedLocation);
+        } catch (err) {
+            console.log('Error');
+        }
     }
 };
 

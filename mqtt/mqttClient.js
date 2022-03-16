@@ -1,4 +1,4 @@
-const MqttHandler = require('./mqtt/mqttHandler');
+const MqttHandler = require('./mqttHandler');
 
 const mqttClient = new MqttHandler();
 

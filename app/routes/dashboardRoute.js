@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../models');
 const validate = require('./tokenValidation');
+const MqttHandler = require('../../mqtt/mqttHandler');
 
 const Location = db.location;
 const Device = db.device;
@@ -54,17 +55,17 @@ router.get('/dashboard/:deviceID/status', validate, async (req, res) => {
     });
 });
 
-// router.post('/dashboard/:deviceID/status', async (req, res) => {
-//     const device = await Device.findOne({
-//         where: { imei: req.params.deviceID },
-//     });
+router.post('/dashboard/:deviceID/status', async (req) => {
+    const topic = `action/${req.params.deviceID}`;
+    console.log(topic);
+    const mqttUpdate = new MqttHandler('mode-update');
+    mqttUpdate.connect();
+    mqttUpdate.sendMessage(req.body, topic);
 
-//     device.mode = req.body.mode;
-//     console.log(device);
-//     const updatedDevice = await device.save()
-//     .then(() => {
-
-//     })
-// });
+    Device.update(
+        { mode: req.body.actions },
+        { where: { imei: req.params.deviceID } },
+    );
+});
 
 module.exports = router;
