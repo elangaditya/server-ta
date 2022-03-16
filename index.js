@@ -11,19 +11,19 @@ dotenv.config();
 const path = require('path');
 
 // MQTT Connect
-const mqtt = require('mqtt');
+// const mqtt = require('mqtt');
 
-const host = '128.199.77.62';
-const port = '1883';
-const clientId = 'mqtt_backend_server';
+// const host = '128.199.77.62';
+// const port = '1883';
+// const clientId = 'mqtt_backend_server';
 
-const connectUrl = `mqtt://${host}:${port}`;
-const client = mqtt.connect(connectUrl, {
-  clientId,
-  clean: true,
-  connectTimeout: 4000,
-  reconnectPeriod: 1000,
-});
+// const connectUrl = `mqtt://${host}:${port}`;
+// const client = mqtt.connect(connectUrl, {
+//   clientId,
+//   clean: true,
+//   connectTimeout: 4000,
+//   reconnectPeriod: 1000,
+// });
 
 const app = express();
 app.use(cookieParser());
@@ -44,10 +44,10 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
 // database
-const db = require('./app/models');
+// const db = require('./app/models');
 
-const Location = db.location;
-const Device = db.device;
+// const Location = db.location;
+// const Device = db.device;
 // db.sequelize.sync({ force: true });
 
 // Public
@@ -70,37 +70,40 @@ app.listen(PORT, () => {
 });
 
 // MQTT
-const topic = 'device/#';
-client.on('connect', () => {
-  console.log('Connected');
-  client.subscribe([topic], () => {
-    console.log(`Subscribe to topic '${topic}'`);
-  });
-});
+// eslint-disable-next-line no-unused-vars
+const mqttClient = require('./mqttClient');
 
-client.on('message', async (topic, payload) => {
-  console.log('Topic: ', topic);
-  console.log('Received Message:', payload.toString());
-  const topicArray = topic.split('/');
-  const device = await Device.findOrCreate({
-    where: { imei: topicArray[1] },
-  });
-  console.log(device);
+// const topic = 'device/#';
+// client.on('connect', () => {
+//   console.log('Connected');
+//   client.subscribe([topic], () => {
+//     console.log(`Subscribe to topic '${topic}'`);
+//   });
+// });
 
-  const locationData = JSON.parse(payload);
-  locationData.device_imei = topicArray[1];
-  const location = await Location.create(locationData);
-  console.log(locationData);
+// client.on('message', async (topic, payload) => {
+//   console.log('Topic: ', topic);
+//   console.log('Received Message:', payload.toString());
+//   const topicArray = topic.split('/');
+//   const device = await Device.findOrCreate({
+//     where: { imei: topicArray[1] },
+//   });
+//   console.log(device);
 
-  Device.update(
-    { mode: locationData.mode },
-    { where: { imei: topicArray[1] } },
-  );
+//   const locationData = JSON.parse(payload);
+//   locationData.device_imei = topicArray[1];
+//   const location = await Location.create(locationData);
+//   console.log(locationData);
 
-  try {
-    const savedLocation = await location.save();
-    console.log(savedLocation);
-  } catch (err) {
-    console.log('Error');
-  }
-});
+//   Device.update(
+//     { mode: locationData.mode },
+//     { where: { imei: topicArray[1] } },
+//   );
+
+//   try {
+//     const savedLocation = await location.save();
+//     console.log(savedLocation);
+//   } catch (err) {
+//     console.log('Error');
+//   }
+// });
