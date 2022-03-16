@@ -6,8 +6,6 @@ const db = require('../models');
 const User = db.user;
 
 const { registerValidation, loginValidation } = require('./validation');
-// const mail = require("./mail");
-// const passport = require("passport");
 
 // REGISTER ROUTE
 router.get('/register', (req, res) => {
@@ -36,7 +34,6 @@ router.post('/register', async (req, res) => {
 
     try {
         await user.save();
-        // console.log(savedUser);
         res.redirect('/auth/login');
     } catch (err) {
         res.status(400).send(err);
@@ -70,24 +67,5 @@ router.post('/login', async (req, res) => {
         httpOnly: true, secure: false,
     }).redirect('/api/home');
 });
-
-// GOOGLE ROUTE
-// router.get(
-//     "/google",
-//     passport.authenticate("google", {
-//         scope: ["profile"],
-//     })
-// );
-
-// EMAIL CONFIRMATION ROUTE
-// router.get("/:token", async (req, res) => {
-//     const verified = jwt.verify(req.params.token, process.env.TOKEN_EMAIL);
-//     // res.send(verified);
-//     const user = await User.findOne({ _id: verified._id });
-//     user.activated = true;
-//     await user.save();
-
-//     res.send(user);
-// });
 
 module.exports = router;
