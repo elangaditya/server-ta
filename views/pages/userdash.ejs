@@ -150,7 +150,6 @@
 
         const getData = () => {
             $.get("/api/dashboard/" + <%= deviceID %> + "/data", (data, status) => {
-                console.log(data)
                 let position = {
                     lat : data[0].lat,
                     long : data[0].long
@@ -158,6 +157,8 @@
                 showPosition(position)
                 clearTable()
                 printTable(data)
+                data = undefined
+                delete(data)
             })
         }
         getData()
@@ -179,7 +180,7 @@
  
         
 
-        // showPosition(position)
+        // showPosition(position) 
 
         
     </script>

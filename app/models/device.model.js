@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Device = sequelize.define("Device", {
+    const Device = sequelize.define('Device', {
         vehicleName: {
             type: Sequelize.STRING,
         },
@@ -8,7 +8,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         imei: {
             type: Sequelize.STRING,
-        }
+        },
+        licensePlate: {
+            type: Sequelize.STRING,
+        },
     });
 
     return Device;

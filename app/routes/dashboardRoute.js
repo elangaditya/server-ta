@@ -5,7 +5,6 @@ const MqttHandler = require('../../mqtt/mqttHandler');
 
 const Location = db.location;
 const Device = db.device;
-// const jwt = require('jsonwebtoken');
 
 router.get('/home', validate, async (req, res) => {
     console.log(req.user);
@@ -22,10 +21,6 @@ router.get('/dashboard/:deviceID/data', validate, async (req, res) => {
 
     const array = locations.reverse().slice(0, 50);
     res.send(array);
-    // .then((locations) => {
-    //     console.log(locations)
-    //     res.render('pages/userdash', {locations: locations})
-    // })
 });
 
 router.get('/dashboard/:deviceID', validate, async (req, res) => {
@@ -67,5 +62,19 @@ router.post('/dashboard/:deviceID/status', async (req) => {
         { where: { imei: req.params.deviceID } },
     );
 });
+
+// router.get('/pairing', (req, res) => {
+//     res.render('pages/pairing');
+// });
+
+// router.post('/pairing', async (req, res) => {
+//     const device = await Device.findOne({
+//         where: {
+//             imei: req.body.deviceID,
+//         };
+//     }).then((data) => {
+        
+//     })
+// })
 
 module.exports = router;

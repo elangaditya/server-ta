@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Location = sequelize.define("Location", {
+    const Location = sequelize.define('Location', {
         mode: {
             type: Sequelize.STRING,
         },
@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         device_imei: {
             type: Sequelize.STRING,
-        }
+        },
     });
 
     return Location;

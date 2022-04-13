@@ -7,10 +7,9 @@ const locationHandler = async (topic, payload) => {
     console.log('Topic: ', topic);
     console.log('Received Message:', payload.toString());
     const topicArray = topic.split('/');
-    const device = await Device.findOrCreate({
+    await Device.findOrCreate({
         where: { imei: topicArray[1] },
     });
-    console.log(device);
 
     const { eventName } = JSON.parse(payload);
     if (eventName === 'TrackerData') {
@@ -18,7 +17,6 @@ const locationHandler = async (topic, payload) => {
         // eslint-disable-next-line prefer-destructuring
         locationData.device_imei = topicArray[1];
         const location = await Location.create(locationData);
-        console.log(locationData);
 
         Device.update(
             { mode: locationData.mode },
@@ -26,8 +24,7 @@ const locationHandler = async (topic, payload) => {
         );
 
         try {
-            const savedLocation = await location.save();
-            console.log(savedLocation);
+            location.save();
         } catch (err) {
             console.log('Error');
         }

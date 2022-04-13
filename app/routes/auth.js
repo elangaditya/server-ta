@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../models');
 
@@ -57,7 +57,6 @@ router.post('/login', async (req, res) => {
     // Password Compare
     const validPass = await bcrypt.compare(req.body.password, user.password);
     if (!validPass) return res.status(400).send('Invalid password');
-    console.log(user);
 
     // Auth-token
     const token = jwt.sign({ id: user.id, name: user.name }, process.env.TOKEN_SECRET, {

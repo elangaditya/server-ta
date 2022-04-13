@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+    <title>Pair Menu</title>
+</head>
+
+<body>
+    <br><br><br><br><br><br>
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="p-3">
+                    <form action="/api/pairing" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control p-4" id="ID Device" name="deviceID" placeholder="ID Device">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control p-4" id="License Plat" name="vehiclePlate" placeholder="License Plat">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control p-4" id="Car" name="carModel" placeholder="Car">
+                        </div>
+
+                        <br>
+                        <div class="text-center">
+                            <input type="submit" value="PAIR" class="btn btn-primary btn-user font-weight-bolder pl-5 pr-5">
+                        </div>
+                        
+                    </form>
+                    
+                    <nav class="navbar navbar-light bg-light text-center fixed-top">
+                        <div class="container-fluid p-3">
+                            <a class="font-weight-bold" href="PairDevice.html"> < Back</a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <%- include('../partials/script') %> 
+
+</body>
+
+</html>

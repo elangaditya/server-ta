@@ -44,23 +44,19 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
 // database
-// const db = require('./app/models');
+const db = require('./app/models');
 
-// const Location = db.location;
-// const Device = db.device;
-// db.sequelize.sync({ force: true });
+db.sequelize.sync({ force: true });
 
 // Public
 app.use(express.static('public'));
 
 // Import Routes
 const authRoute = require('./app/routes/auth');
-const privateRoute = require('./app/routes/private');
 const dashRoute = require('./app/routes/dashboardRoute');
 
 // Routing
 app.use('/auth', authRoute);
-app.use('/api/private', privateRoute);
 app.use('/api', dashRoute);
 
 // set port, listen for requests
@@ -72,38 +68,3 @@ app.listen(PORT, () => {
 // MQTT
 // eslint-disable-next-line no-unused-vars
 const mqttClient = require('./mqtt/mqttClient');
-
-// const topic = 'device/#';
-// client.on('connect', () => {
-//   console.log('Connected');
-//   client.subscribe([topic], () => {
-//     console.log(`Subscribe to topic '${topic}'`);
-//   });
-// });
-
-// client.on('message', async (topic, payload) => {
-//   console.log('Topic: ', topic);
-//   console.log('Received Message:', payload.toString());
-//   const topicArray = topic.split('/');
-//   const device = await Device.findOrCreate({
-//     where: { imei: topicArray[1] },
-//   });
-//   console.log(device);
-
-//   const locationData = JSON.parse(payload);
-//   locationData.device_imei = topicArray[1];
-//   const location = await Location.create(locationData);
-//   console.log(locationData);
-
-//   Device.update(
-//     { mode: locationData.mode },
-//     { where: { imei: topicArray[1] } },
-//   );
-
-//   try {
-//     const savedLocation = await location.save();
-//     console.log(savedLocation);
-//   } catch (err) {
-//     console.log('Error');
-//   }
-// });
