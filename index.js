@@ -10,21 +10,6 @@ dotenv.config();
 // eslint-disable-next-line no-unused-vars
 const path = require('path');
 
-// MQTT Connect
-// const mqtt = require('mqtt');
-
-// const host = '128.199.77.62';
-// const port = '1883';
-// const clientId = 'mqtt_backend_server';
-
-// const connectUrl = `mqtt://${host}:${port}`;
-// const client = mqtt.connect(connectUrl, {
-//   clientId,
-//   clean: true,
-//   connectTimeout: 4000,
-//   reconnectPeriod: 1000,
-// });
-
 const app = express();
 app.use(cookieParser());
 

@@ -7,10 +7,4 @@ module.exports = {
     dialectOptions: {
         socketPath: process.env.DB_HOST,
     },
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000,
-    },
 };
