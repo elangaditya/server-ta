@@ -146,6 +146,7 @@
 
         const clearTable = () => {
             document.getElementById('table-container').innerHTML = ""
+            document.getElementById('map').innerHTML = ""
         }
 
         const getData = () => {
@@ -154,8 +155,8 @@
                     lat : data[0].lat,
                     long : data[0].long
                 }
-                showPosition(position)
                 clearTable()
+                showPosition(position)
                 printTable(data)
                 data = undefined
                 delete(data)
