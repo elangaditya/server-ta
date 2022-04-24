@@ -1,0 +1,21 @@
+{
+    "name": "TA",
+    "short_name": "TA",
+    "start_url": "/auth/login",
+    "theme_color": "#ffffff",
+    "background_color": "#fd749b",
+    "display": "standalone",
+    "icons": [{
+        "src": "/img/512px-Circle-icons-car.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+       },
+       {
+        "src": "/img/192px-Circle-icons-car.png",
+        "sizes": "192x192",
+        "type": "image/png" ,
+        "purpose": "any maskable"
+       }
+       ]
+}

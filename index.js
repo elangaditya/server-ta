@@ -29,9 +29,10 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
 // database
+// eslint-disable-next-line no-unused-vars
 const db = require('./app/models');
 
-db.sequelize.sync({ force: true });
+// db.sequelize.sync({ force: true });
 
 // Public
 app.use(express.static('public'));
@@ -39,10 +40,12 @@ app.use(express.static('public'));
 // Import Routes
 const authRoute = require('./app/routes/auth');
 const dashRoute = require('./app/routes/dashboardRoute');
+const notifRoute = require('./app/routes/notificationHandler');
 
 // Routing
 app.use('/auth', authRoute);
 app.use('/api', dashRoute);
+app.use('/notification', notifRoute);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

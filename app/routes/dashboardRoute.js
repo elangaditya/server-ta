@@ -5,6 +5,7 @@ const MqttHandler = require('../../mqtt/mqttHandler');
 
 const Location = db.location;
 const Device = db.device;
+const User = db.user;
 
 router.get('/home', validate, async (req, res) => {
     console.log(req.user);
@@ -25,28 +26,41 @@ router.get('/dashboard/:deviceID/data', validate, async (req, res) => {
 
 router.get('/dashboard/:deviceID', validate, async (req, res) => {
     await Device.findOne({
-        where: { imei: req.params.deviceID },
+        where: { imei: req.params.deviceID, user_id: req.user.id },
     }).then((data) => {
+        if (data == null) {
+            const err = new Error('Device not found');
+            err.code = 404;
+            throw err;
+        }
+
         res.render('pages/userdash', {
             deviceID: req.params.deviceID,
             mode: data.mode,
             user: req.user,
         });
     })
-    .catch(() => {
-        res.status(404).send('Device not found');
+    .catch((err) => {
+        res.status(err.code).send(err.message);
     });
 });
 
 router.get('/dashboard/:deviceID/status', validate, async (req, res) => {
     await Device.findOne({
-        where: { imei: req.params.deviceID },
+        where: { imei: req.params.deviceID, user_id: req.user.id },
     }).then((data) => {
+        if (data == null) {
+            const err = new Error('Device not found');
+            err.code = 404;
+            throw err;
+        }
         res.render('pages/status', {
             deviceID: req.params.deviceID,
             mode: data.mode,
             user: req.user,
         });
+    }).catch((err) => {
+        res.status(err.code).send(err.message);
     });
 });
 
@@ -63,18 +77,37 @@ router.post('/dashboard/:deviceID/status', async (req) => {
     );
 });
 
-// router.get('/pairing', (req, res) => {
-//     res.render('pages/pairing');
-// });
+router.get('/pairing', (req, res) => {
+    res.render('pages/pairing');
+});
 
-// router.post('/pairing', async (req, res) => {
-//     const device = await Device.findOne({
-//         where: {
-//             imei: req.body.deviceID,
-//         };
-//     }).then((data) => {
-        
-//     })
-// })
+router.post('/pairing', validate, async (req, res) => {
+    await Device.findOne({
+        where: {
+            imei: req.body.deviceID,
+        },
+    }).then(async (data) => {
+        if (data == null) {
+            const err = new Error('Device not found');
+            err.code = 404;
+            throw err;
+        }
+        if (data.user_id !== null) {
+            // eslint-disable-next-line no-throw-literal
+            const err = new Error('Device already paired');
+            err.code = 406;
+            throw err;
+        }
+        const user = await User.findOne({
+            where: {
+                id: req.user.id,
+            },
+        });
+        data.setUser(user);
+        res.send(data);
+    }).catch((err) => {
+        res.status(err.code).send(err.message);
+    });
+});
 
 module.exports = router;
