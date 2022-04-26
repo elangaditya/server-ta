@@ -64,17 +64,18 @@ router.get('/dashboard/:deviceID/status', validate, async (req, res) => {
     });
 });
 
-router.post('/dashboard/:deviceID/status', async (req) => {
+router.post('/dashboard/:deviceID/status', async (req, res) => {
     const topic = `action/${req.params.deviceID}`;
     console.log(topic);
     const mqttUpdate = new MqttHandler('mode-update');
     mqttUpdate.connect();
     mqttUpdate.sendMessage(req.body, topic);
 
-    Device.update(
-        { mode: req.body.actions },
+    const device = await Device.update(
+        { mode: req.body.action },
         { where: { imei: req.params.deviceID } },
     );
+    res.send(device);
 });
 
 router.get('/pairing', (req, res) => {

@@ -1,16 +1,19 @@
 <script>
     const deviceID = <%= deviceID %>
     const changeModeIdle = () => {
-        $.post('/api/dashboard/' + deviceID + '/status', {actions: 'idle'});
+        $.post('/api/dashboard/' + deviceID + '/status', {action: 'idle'});
         setTimeout(document.location.reload(), 1000);
     };
     const changeModeSurveillance = () => {
-        $.post('/api/dashboard/' + deviceID + '/status', {actions: 'surveillance'});
+        $.post('/api/dashboard/' + deviceID + '/status', {action: 'surveillance'});
         setTimeout(document.location.reload(), 1000);
     };
     const changeModeIntense = () => {
-        $.post('/api/dashboard/' + deviceID + '/status', {actions: 'intense'});
+        $.post('/api/dashboard/' + deviceID + '/status', {action: 'intense'});
         setTimeout(document.location.reload(), 1000);
     };
-    
+
+    const reportDevice = () => {
+        $.post('api/dashboard/' + deviceID + '/report')
+    }    
 </script>
