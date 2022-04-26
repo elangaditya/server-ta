@@ -5,7 +5,7 @@ const caFile = fs.readFileSync('./cert/chain.pem');
 const certFile = fs.readFileSync('./cert/cert.pem');
 const keyFile = fs.readFileSync('./cert/key.pem');
 
-const { locationHandler } = require('./messageHandler');
+const { messageHandler } = require('./messageHandler');
 
 class MqttHandler {
     constructor(id) {
@@ -36,7 +36,7 @@ class MqttHandler {
             });
         });
 
-        this.mqttClient.on('message', locationHandler);
+        this.mqttClient.on('message', messageHandler);
     }
 
     sendMessage(message, topic) {

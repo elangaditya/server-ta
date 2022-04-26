@@ -32,11 +32,15 @@ db.location = require('./location.model')(sequelize, Sequelize);
 db.user = require('./user.model')(sequelize, Sequelize);
 db.device = require('./device.model')(sequelize, Sequelize);
 db.subscription = require('./subscription.model')(sequelize, Sequelize);
+db.case = require('./case.model')(sequelize, Sequelize);
 
 db.user.hasMany(db.device, { foreignKey: 'user_id' });
 db.device.belongsTo(db.user, { foreignKey: 'user_id' });
 
-db.user.hasMany(db.subscription, { foreingKey: 'user_id' });
+db.user.hasMany(db.subscription, { foreignKey: 'user_id' });
 db.subscription.belongsTo(db.user, { foreignKey: 'user_id' });
+
+db.device.hasMany(db.case, { foreignKey: 'device_id' });
+db.case.belongsTo(db.device, { foreignKey: 'device_id' });
 
 module.exports = db;

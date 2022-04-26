@@ -6,6 +6,7 @@ const MqttHandler = require('../../mqtt/mqttHandler');
 const Location = db.location;
 const Device = db.device;
 const User = db.user;
+const Case = db.case;
 
 router.get('/home', validate, async (req, res) => {
     console.log(req.user);
@@ -109,8 +110,5 @@ router.post('/pairing', validate, async (req, res) => {
         res.status(err.code).send(err.message);
     });
 });
-
-// router.post('/report', validate, async (req, res) => {
-// })
 
 module.exports = router;
