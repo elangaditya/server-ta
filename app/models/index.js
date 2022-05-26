@@ -19,7 +19,7 @@ const devOptions = {
     },
 };
 
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, process.env.NODE_ENV !== 'production' ? devOptions : options);
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, options);
 
 const db = {};
 
