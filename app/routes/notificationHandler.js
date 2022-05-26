@@ -52,17 +52,25 @@ router.post('/subscribe', validate, async (req, res) => {
 });
 
 // router.post('/testpush', async (req) => {
-//     const subData = await Subscription.findAll({
-//         where: { user_id: req.id}
-//     })
+//     const subscription = await Subscription.findAll({
+//         where: { user_id: req.body.user_id },
+//     });
+//     subscription.forEach((data) => {
+//         const subData = {
+//             endpoint: data.endpoint,
+//             keys: {
+//                 p256dh: data.p256dh,
+//                 auth: data.auth,
+//             },
+//         };
 
-//     const message = {
-//         title: req.body.title,
-//         body: req.body.body,
-//     };
-
-//     webpush.sendNotification(subscription, JSON.stringify(message)).catch((err) => {
-//         console.error(err);
+//         const message = {
+//             title: 'Pergerakan Tidak Terautorisasi Terdeteksi',
+//             body: `Terdeteksi pergerakan pada kendaraan Toyota Avanza.`,
+//         };
+//         webpush.sendNotification(subData, JSON.stringify(message)).catch((err) => {
+//             console.error(err);
+//         });
 //     });
 // });
 
