@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const webpush = require('web-push');
 const db = require('../app/models');
 
@@ -8,37 +9,36 @@ webpush.setVapidDetails('mailto:elang@google.com', publicKey, privateKey);
 
 const Location = db.location;
 const Device = db.device;
-// const User = db.user;
+const User = db.user;
 const Subscription = db.subscription;
 
 const messageHandler = async (topic, payload) => {
     console.log('Topic: ', topic);
     console.log('Received Message:', payload.toString());
     const topicArray = topic.split('/');
+    const deviceID = topicArray[1];
+
     const device = await Device.findOrCreate({
-        where: { imei: topicArray[1] },
-    });
+        where: { imei: deviceID },
+    })
 
     const { eventName } = JSON.parse(payload);
     if (eventName === 'TrackerData') {
-        const locationData = JSON.parse(payload);
+        const locationData = JSON.parse(payload); 
         // eslint-disable-next-line prefer-destructuring
         locationData.device_imei = topicArray[1];
         const location = await Location.create(locationData);
 
         Device.update(
             { mode: locationData.mode },
-            { where: { imei: topicArray[1] } },
+            { where: { imei: deviceID } },
         );
-
-        try {
-            location.save();
-        } catch (err) {
-            console.log('Error');
-        }
     }
 
     if (eventName === 'TriggerNotification') {
+        // const device = await Device.findOne({
+        //     where: { imei: deviceID },
+        // });
         const subscription = await Subscription.findAll({
             where: { user_id: device.user_id },
         });

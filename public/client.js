@@ -26,7 +26,7 @@ isDomReady((e) => {
 
     // eslint-disable-next-line no-shadow
     document.getElementById('subscribe').addEventListener('click', async (e) => {
-        const registration = await navigator.serviceWorker.register('/worker.js', { scope: '/' });
+        const registration = await navigator.serviceWorker.register('../worker.js', { scope: '/' });
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: urlBase64ToUint8Array(publicVapidKey),

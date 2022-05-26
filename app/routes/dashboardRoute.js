@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const db = require('../models');
-const validate = require('./tokenValidation');
+const validate = require('./userValidation');
 const MqttHandler = require('../../mqtt/mqttHandler');
 
 const Location = db.location;
 const Device = db.device;
 const User = db.user;
+const Case = db.case;
 
 router.get('/home', validate, async (req, res) => {
     console.log(req.user);
@@ -105,13 +106,28 @@ router.post('/pairing', validate, async (req, res) => {
             },
         });
         data.setUser(user);
+        data.vehicleName = req.body.vehicleName;
+        data.licensePlate = req.body.licensePlate;
+        data.save();
         res.send(data);
     }).catch((err) => {
         res.status(err.code).send(err.message);
     });
 });
 
-// router.post('/report', validate, async (req, res) => {
-// })
+router.post('/dashboard/:deviceID/report', validate, async (req, res) => {
+    const device = await Device.findOne({
+        where: { imei: req.params.deviceID, user_id: req.user.id },
+    });
+    
+    const newCase = await Case.create({
+        licensePlate: device.licensePlate,
+        vehicleName: device.vehicleName,
+    });
+
+
+    newCase.setDevice(device);
+    res.send(newCase);
+});
 
 module.exports = router;

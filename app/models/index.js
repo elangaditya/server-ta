@@ -33,6 +33,7 @@ db.user = require('./user.model')(sequelize, Sequelize);
 db.device = require('./device.model')(sequelize, Sequelize);
 db.subscription = require('./subscription.model')(sequelize, Sequelize);
 db.case = require('./case.model')(sequelize, Sequelize);
+db.police = require('./police.model')(sequelize, Sequelize);
 
 db.user.hasMany(db.device, { foreignKey: 'user_id' });
 db.device.belongsTo(db.user, { foreignKey: 'user_id' });

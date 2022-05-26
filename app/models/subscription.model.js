@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
         endpoint: {
             type: Sequelize.STRING,
         },
-        pd256h: {
+        p256dh: {
             type: Sequelize.STRING,
         },
         auth: {

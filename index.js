@@ -38,12 +38,16 @@ const db = require('./app/models');
 app.use(express.static('public'));
 
 // Import Routes
-const authRoute = require('./app/routes/auth');
+const authRoute = require('./app/routes/userAuth');
 const dashRoute = require('./app/routes/dashboardRoute');
 const notifRoute = require('./app/routes/notificationHandler');
+const policeAuth = require('./app/routes/policeAuth');
+const policeDashboard = require('./app/routes/policeDashboard');
 
 // Routing
 app.use('/auth', authRoute);
+app.use('/police/auth', policeAuth);
+app.use('/police/api', policeDashboard)
 app.use('/api', dashRoute);
 app.use('/notification', notifRoute);
 

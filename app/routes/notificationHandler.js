@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const webpush = require('web-push');
-const validate = require('./tokenValidation');
+const validate = require('./userValidation');
 const db = require('../models');
 
 const Subscription = db.subscription;
@@ -12,15 +12,20 @@ const publicKey = 'BG3LYBrcCZRQJyH9CfuVjteXWjCrCGBXDC9w8C0hQ9FwGBzcaBejAAcnsKwG-
 webpush.setVapidDetails('mailto:elang@google.com', publicKey, privateKey);
 
 router.get('/subscribe', validate, (req, res) => {
+    console.log('test');
     res.render('pages/notif', { user: req.user });
 });
 
 router.post('/subscribe', validate, async (req, res) => {
     // get push subscription object from the request
+    console.log(req.body);
+    const { endpoint } = req.body;
+    const { p256dh } = req.body.keys;
+    const { auth } = req.body.keys;
     await Subscription.create({
-        endpoint: req.body.endpoint,
-        p256dh: req.body.keys.p256dh,
-        key: req.body.keys.auth,
+        endpoint,
+        p256dh,
+        auth,
     }).then(async (data) => {
         res.status(201).json({});
 
@@ -38,7 +43,7 @@ router.post('/subscribe', validate, async (req, res) => {
         };
 
         // create paylod: specified the detals of the push notification
-        const payload = JSON.stringify({ title: 'Section.io Push Notification' });
+        const payload = JSON.stringify({ title: 'Push Notification' });
         console.log(subscription);
 
         // pass the object into sendNotification fucntion and catch any error
@@ -46,23 +51,19 @@ router.post('/subscribe', validate, async (req, res) => {
     });
 });
 
-router.post('/testpush', (req) => {
-    const subscription = {
-        endpoint: req.body.endpoint,
-        keys: {
-            p256dh: req.body.p256dh,
-            auth: req.body.auth,
-        },
-    };
+// router.post('/testpush', async (req) => {
+//     const subData = await Subscription.findAll({
+//         where: { user_id: req.id}
+//     })
 
-    const message = {
-        title: req.body.title,
-        body: req.body.body,
-    };
+//     const message = {
+//         title: req.body.title,
+//         body: req.body.body,
+//     };
 
-    webpush.sendNotification(subscription, JSON.stringify(message)).catch((err) => {
-        console.error(err);
-    });
-});
+//     webpush.sendNotification(subscription, JSON.stringify(message)).catch((err) => {
+//         console.error(err);
+//     });
+// });
 
 module.exports = router;
