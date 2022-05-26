@@ -79,7 +79,7 @@ router.post('/dashboard/:deviceID/status', async (req, res) => {
     res.send(device);
 });
 
-router.get('/pairing', (req, res) => {
+router.get('/pairing', validate, (req, res) => {
     res.render('pages/pairing');
 });
 
