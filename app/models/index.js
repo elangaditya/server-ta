@@ -1,27 +1,35 @@
 const Sequelize = require('sequelize');
 const dbConfig = require('../config/db.config');
 
-const options = {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    dialectOptions: {
-        socketPath: dbConfig.HOST,
-    },
-};
-
-// const devOptions = {
+// const options = {
 //     host: dbConfig.HOST,
 //     dialect: dbConfig.dialect,
-//     operatorsAliases: false,
-//     pool: {
-//         max: dbConfig.pool.max,
-//         min: dbConfig.pool.min,
-//         acquire: dbConfig.pool.acquire,
-//         idle: dbConfig.pool.idle,
+//     dialectOptions: {
+//         socketPath: dbConfig.HOST,
 //     },
 // };
 
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, options);
+// // const devOptions = {
+// //     host: dbConfig.HOST,
+// //     dialect: dbConfig.dialect,
+// //     operatorsAliases: false,
+// //     pool: {
+// //         max: dbConfig.pool.max,
+// //         min: dbConfig.pool.min,
+// //         acquire: dbConfig.pool.acquire,
+// //         idle: dbConfig.pool.idle,
+// //     },
+// // };
+
+// const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, options);
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    dialectOptions: {
+        socketPath: process.env.DB_HOST,
+    },
+});
+
 
 const db = {};
 
