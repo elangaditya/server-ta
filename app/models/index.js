@@ -4,9 +4,7 @@ const dbConfig = require('../config/db.config');
 const options = {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    dialectOptions: {
-        socketPath: process.env.DB_HOST,
-    },
+    dialectOptions: dbConfig.dialectOptions,
 };
 
 const devOptions = {
