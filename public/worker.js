@@ -21,26 +21,26 @@ self.addEventListener('install', (e) => {
     );
 });
 
-// // activate event
-// self.addEventListener('activate', (e) => {
-//     e.waitUntil(
-//         caches.keys().then((keys) =>
-//             // console.log(keys);
-//              Promise.all(keys
-//                 .filter((key) => key !== staticCacheName && key !== dynamicCache)
-//                 .map((key) => caches.delete(key)))),
-//     );
-// });
+// activate event
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then((keys) =>
+            // console.log(keys);
+             Promise.all(keys
+                .filter((key) => key !== staticCacheName && key !== dynamicCache)
+                .map((key) => caches.delete(key)))),
+    );
+});
 
-// // Fetch Event
-// self.addEventListener('fetch', (e) => {
-//     e.respondWith(
-//         caches.match(e.request).then((response) => response || fetch(e.request).then((fetchRes) => caches.open(dynamicCache).then((cache) => {
-//                     cache.put(e.request.url, fetchRes.clone());
-//                     return fetchRes;
-//                 }))).catch(() => caches.match('./error.html')),
-//     );
-// });
+// Fetch Event
+self.addEventListener('fetch', (e) => {
+    e.respondWith(
+        caches.match(e.request).then((response) => response || fetch(e.request).then((fetchRes) => caches.open(dynamicCache).then((cache) => {
+                    cache.put(e.request.url, fetchRes.clone());
+                    return fetchRes;
+                }))).catch(() => caches.match('./error.html')),
+    );
+});
 
 self.addEventListener('push', (e) => {
     const data = e.data.json();

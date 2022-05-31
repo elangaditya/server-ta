@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../models');
 const validate = require('./policeValidation');
+const Op = require("sequelize").Op;
 
 const Location = db.location;
 const Device = db.device;
@@ -35,11 +36,12 @@ router.get('/locationdata/:caseID', validate, async (req, res) => {
     const currentCase = await Case.findOne({
         where: { id: req.params.caseID }
     })
+    console.log(currentCase);
     const locations = await Location.findAll({
         where: { 
             device_imei: currentCase.device_id,
             createdAt: {
-                $gte: currentCase.createdAt,
+                [Op.gte]: currentCase.createdAt,
             },
         },
         raw: true,
