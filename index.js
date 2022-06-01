@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 // eslint-disable-next-line no-unused-vars
 const db = require('./app/models');
 
-// db.sequelize.sync({ force: true });
+db.sequelize.sync({ force: true });
 
 // Public
 app.use(express.static('public'));
