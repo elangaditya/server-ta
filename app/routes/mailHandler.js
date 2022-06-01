@@ -17,7 +17,7 @@ module.exports.confirmationMail = async function (user) {
     });
 
     // send mail with defined transport object
-    let link = process.env.LINK_EMAIL + `${token}`;
+    let link = process.env.LINK_EMAIL + `auth/${token}`;
     let info = await transporter.sendMail({
         to: user.email, // list of receivers
         subject: "Konfirmasi Email", // Subject line

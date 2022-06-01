@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
         licensePlate: {
             type: Sequelize.STRING,
         },
+        color: {
+            type: Sequelize.STRING,
+        },
     });
 
     return Device;

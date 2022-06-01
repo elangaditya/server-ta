@@ -8,7 +8,7 @@ const Device = db.device;
 const User = db.user;
 const Case = db.case;
 
-router.get('/home', validate, async (req, res) => {
+router.get('/', validate, async (req, res) => {
     console.log(req.user);
     res.render('pages/home', {
         user: req.user,
