@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../models');
+const { confirmationMail } = require('./mailHandler');
 
 const User = db.user;
 
@@ -33,7 +34,8 @@ router.post('/register', async (req, res) => {
     });
 
     try {
-        await user.save();
+        const savedUser = await user.save();
+        confirmationMail(savedUser);
         res.redirect('/auth/login');
     } catch (err) {
         res.status(400).send(err);
@@ -65,6 +67,17 @@ router.post('/login', async (req, res) => {
     res.cookie('auth_token', token, {
         httpOnly: true, secure: false,
     }).redirect('/api/home');
+});
+
+// EMAIL CONFIRMATION ROUTE
+router.get("/:token", async (req, res) => {
+    const verified = jwt.verify(req.params.token, process.env.TOKEN_EMAIL);
+    // res.send(verified);
+    const user = await User.findByPk(verified.id);
+    user.validated = true;
+    await user.save();
+
+    res.send(user);
 });
 
 module.exports = router;

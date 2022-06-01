@@ -21,10 +21,10 @@ module.exports = (sequelize, Sequelize) => {
         password: {
             type: Sequelize.STRING,
         },
-        // validated: {
-        //     type: Sequelize.BOOLEAN,
-        //     defaultValue: false,
-        // },
+        validated: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+        },
     });
 
     return User;
