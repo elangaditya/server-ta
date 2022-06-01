@@ -2,23 +2,23 @@ const Sequelize = require('sequelize');
 const dbConfig = require('../config/db.config');
 
 const options = {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    dialectOptions: {
-        socketPath: dbConfig.HOST,
-    },
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  dialectOptions: {
+    socketPath: dbConfig.HOST,
+  },
 };
 
 const devOptions = {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    operatorsAliases: false,
-    pool: {
-        max: dbConfig.pool.max,
-        min: dbConfig.pool.min,
-        acquire: dbConfig.pool.acquire,
-        idle: dbConfig.pool.idle,
-    },
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  operatorsAliases: false,
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle,
+  },
 };
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, process.env.NODE_ENV !== 'production' ? devOptions : options);
@@ -29,7 +29,6 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, p
 //         socketPath: process.env.DB_HOST,
 //     },
 // });
-
 
 const db = {};
 

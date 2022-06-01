@@ -14,7 +14,7 @@ const app = express();
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: 'http://localhost:8081',
+  origin: 'http://localhost:8081',
 };
 
 app.use(cors(corsOptions));
@@ -47,14 +47,14 @@ const policeDashboard = require('./app/routes/policeDashboard');
 // Routing
 app.use('/auth', authRoute);
 app.use('/police/auth', policeAuth);
-app.use('/police/api', policeDashboard)
+app.use('/police/api', policeDashboard);
 app.use('/api', dashRoute);
 app.use('/notification', notifRoute);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
+  // console.log(`Server is running on port ${PORT}.`);
 });
 
 // MQTT

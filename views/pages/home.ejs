@@ -3,7 +3,6 @@
 
 <head>
     <%- include('../partials/dashboardheader') %> 
-    <script src="/client.js"></script>
 </head>
 
 <body id="page-top">
@@ -27,10 +26,29 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                  <h1>Welcome, <%= user.name %>! </h1>
 
-                    <h1>Welcome, <%= user.name %>!</h1>
-                    <h3>List of Paired Devices</h3>
-                    
+                  <div class="bg-white p-3 rounded">
+                    <div class="row">
+                      <div class="col">
+                        <h3 class="text-left">List of Paired Devices</h3>
+                      </div>
+                      <div class="col text-right">
+                        <button type="button" class="btn btn-primary" onclick="redirectPairing()">Add New Device</button>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row text-center justify-content-center">
+                      <div class="col">Device ID</div>
+                      <div class="col">Car Model</div>
+                      <div class="col">Status</div>
+                      <div class="col">License Plate</div>
+                    </div>
+                    <hr>
+                    <div id="table-container">
+                      <!-- filled with JS -->
+                    </div>
+                  </div>
                 </div>
                 <!-- End of Page Content -->
 
@@ -75,6 +93,53 @@
     <!-- Bootstrap core JavaScript-->
     <%- include('../partials/script') %> 
         
+    <script>
+      const table = document.getElementById("table-container");
+      const getDevices = () => {
+        $.get("/api/dashboard/getdevices", (data, status) => {
+          console.log(data);
+          if (data.length === 0){
+            let text = document.createElement('div');
+            text.className = 'text-center col';
+            text.innerText = 'No Device Paired';
+            table.appendChild(text);
+          } else {
+            data.forEach((element) => {
+              let row = document.createElement('div');
+              row.className = 'row text-center justify-content-center';
+              
+              let imei = document.createElement('div');
+              imei.className = 'col';
+              imei.innerHTML = `<a href="./dashboard/${element.imei}">${element.imei}</a>`;
+
+              let model = document.createElement('div');
+              model.className = 'col';
+              model.innerText = element.vehicleName;
+
+              let status = document.createElement('div');
+              status.className = 'col';
+              status.innerText = element.mode;
+
+              let license = document.createElement('div');
+              license.className = 'col';
+              license.innerText = element.licensePlate;
+
+              row.appendChild(imei);
+              row.appendChild(model);
+              row.appendChild(status);
+              row.appendChild(license);
+              table.appendChild(row);
+            })
+          }
+        })
+      };
+
+      getDevices();
+
+      const redirectPairing = () => {
+        document.location.href = '/api/pairing';
+      };
+      
     </script>
 
 </body>
