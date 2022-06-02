@@ -26,7 +26,7 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 // database
 // eslint-disable-next-line no-unused-vars
