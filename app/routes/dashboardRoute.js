@@ -45,6 +45,7 @@ router.get('/dashboard/:deviceID', validate, async (req, res) => {
 
     res.render('pages/userdash', {
       deviceID: req.params.deviceID,
+      licensePlate: String(data.licensePlate),
       mode: data.mode,
       user: req.user,
     });
@@ -116,8 +117,9 @@ router.post('/pairing', validate, async (req, res) => {
     data.setUser(user);
     data.vehicleName = req.body.vehicleName;
     data.licensePlate = req.body.licensePlate;
+    data.color = req.body.color;
     data.save();
-    res.send(data);
+    res.redirect(`/api/dashboard/${req.body.deviceID}`);
   }).catch((err) => {
     res.status(err.code).send(err.message);
   });

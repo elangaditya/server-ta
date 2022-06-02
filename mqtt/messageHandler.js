@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 const webpush = require('web-push');
 const db = require('../app/models');
@@ -13,53 +14,53 @@ const User = db.user;
 const Subscription = db.subscription;
 
 const messageHandler = async (topic, payload) => {
-    console.log('Topic: ', topic);
-    console.log('Received Message:', payload.toString());
-    const topicArray = topic.split('/');
-    const deviceID = topicArray[1];
+  console.log('Topic: ', topic);
+  console.log('Received Message:', payload.toString());
+  const topicArray = topic.split('/');
+  const deviceID = topicArray[1];
 
-    const device = await Device.findOrCreate({
-        where: { imei: deviceID },
-    })
+  const device = await Device.findOrCreate({
+    where: { imei: deviceID },
+  });
 
-    const { eventName } = JSON.parse(payload);
-    if (eventName === 'TrackerData') {
-        const locationData = JSON.parse(payload); 
-        // eslint-disable-next-line prefer-destructuring
-        locationData.device_imei = topicArray[1];
-        const location = await Location.create(locationData);
+  const { eventName } = JSON.parse(payload);
+  if (eventName === 'TrackerData') {
+    const locationData = JSON.parse(payload);
+    // eslint-disable-next-line prefer-destructuring
+    locationData.device_imei = topicArray[1];
+    const location = await Location.create(locationData);
 
-        Device.update(
-            { mode: locationData.mode },
-            { where: { imei: deviceID } },
-        );
-    }
+    Device.update(
+      { mode: locationData.mode },
+      { where: { imei: deviceID } },
+    );
+  }
 
-    if (eventName === 'TriggerNotification') {
-        // const device = await Device.findOne({
-        //     where: { imei: deviceID },
-        // });
-        const subscription = await Subscription.findAll({
-            where: { user_id: device.user_id },
-        });
-        subscription.forEach((data) => {
-            const subData = {
-                endpoint: data.endpoint,
-                keys: {
-                    p256dh: data.p256dh,
-                    auth: data.auth,
-                },
-            };
+  if (eventName === 'TriggerNotification') {
+    // const device = await Device.findOne({
+    //     where: { imei: deviceID },
+    // });
+    const subscription = await Subscription.findAll({
+      where: { user_id: device.user_id },
+    });
+    subscription.forEach((data) => {
+      const subData = {
+        endpoint: data.endpoint,
+        keys: {
+          p256dh: data.p256dh,
+          auth: data.auth,
+        },
+      };
 
-            const message = {
-                title: 'Pergerakan Tidak Terautorisasi Terdeteksi',
-                body: `Terdeteksi pergerakan pada kendaraan ${device.vehicleName}.`,
-            };
-            webpush.sendNotification(subData, JSON.stringify(message)).catch((err) => {
-                console.error(err);
-            });
-        });
-    }
+      const message = {
+        title: 'Pergerakan Tidak Terautorisasi Terdeteksi',
+        body: `Terdeteksi pergerakan pada kendaraan ${device.vehicleName}.`,
+      };
+      webpush.sendNotification(subData, JSON.stringify(message)).catch((err) => {
+        console.error(err);
+      });
+    });
+  }
 };
 
 module.exports = { messageHandler };

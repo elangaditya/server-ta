@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 // eslint-disable-next-line no-unused-vars
 const db = require('./app/models');
 
-// db.sequelize.sync({ force: true });
+db.sequelize.sync({ force: true });
 
 // Public
 app.use(express.static('public'));
@@ -45,6 +45,9 @@ const policeAuth = require('./app/routes/policeAuth');
 const policeDashboard = require('./app/routes/policeDashboard');
 
 // Routing
+app.get('/', (req, res) => {
+  res.redirect('/auth/login');
+});
 app.use('/auth', authRoute);
 app.use('/police/auth', policeAuth);
 app.use('/police/api', policeDashboard);
