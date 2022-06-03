@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require('sequelize');
 const db = require('../models');
 const validate = require('./userValidation');
 const MqttHandler = require('../../mqtt/mqttHandler');
@@ -130,14 +131,36 @@ router.post('/dashboard/:deviceID/report', validate, async (req, res) => {
     where: { imei: req.params.deviceID, user_id: req.user.id },
   });
 
-  const newCase = await Case.create({
-    ownerName: req.user.name,
-    licensePlate: device.licensePlate,
-    vehicleName: device.vehicleName,
-  });
+  await Case.findOne({
+    where: {
+      device_id: req.params.deviceID,
+      status: {
+        [Op.not]: 2,
+      },
+    },
+  }).then(async (data) => {
+    // console.log(data);
+    if (data !== null) {
+      // console.log('Case exist');
+      const err = new Error('There is already an ongoing case for this vehicle.');
+      err.code = 400;
+      throw err;
+    } else {
+      // console.log('No case');
+      const newCase = await Case.create({
+        ownerName: req.user.name,
+        licensePlate: device.licensePlate,
+        vehicleName: device.vehicleName,
+        color: device.color,
+      });
 
-  newCase.setDevice(device);
-  res.send(newCase);
+      newCase.setDevice(device);
+
+      res.send(newCase);
+    }
+  }).catch((err) => {
+    res.send(err);
+  });
 });
 
 module.exports = router;

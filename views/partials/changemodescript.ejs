@@ -13,7 +13,13 @@
         setTimeout(document.location.reload(), 1000);
     };
 
-    const reportDevice = () => {
-        $.post('api/dashboard/' + deviceID + '/report')
-    }    
+    const reportCase = () => {
+        $.post('/api/dashboard/' + deviceID + '/report', (data, status) => {
+          if (data.code === 400) {
+            alert('There is already an ongoing case for this vehicle.')
+          } else {
+            alert(`Case created for: \nVehicle: ${data.vehicleName}\nPlate Number: ${data.licensePlate}\nCase ID: ${data.id}`);
+          };
+        })
+    };
 </script>

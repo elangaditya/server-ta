@@ -34,7 +34,7 @@ router.post('/register', async (req, res) => {
 
   try {
     await police.save();
-    res.redirect('/auth/login');
+    res.redirect('/police/auth/login');
   } catch (err) {
     res.status(400).send(err);
   }

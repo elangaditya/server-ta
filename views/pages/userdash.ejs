@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../partials/dashboardheader') %>
-  </head>
 
-  <body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-      <!-- Sidebar -->
-      <%- include('../partials/sidebar', {deviceID: deviceID}) %>
+<head>
+  <%- include('../partials/dashboardheader') %>
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar', {deviceID: deviceID}) %>
       <!-- End of Sidebar -->
 
       <!-- Content Wrapper -->
@@ -17,173 +18,163 @@
         <div id="content">
           <!-- Topbar -->
           <%- include('../partials/topbar', user) %>
-          <!-- End of Topbar -->
+            <!-- End of Topbar -->
 
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <div class="bg-white p-3 rounded">
-              <div class="text-right">
-                <button
-                  type="button"
-                  onclick="redirectStatus()"
-                  class="btn btn-primary"
-                >
-                  Status: <%= mode[0].toUpperCase() + mode.substr(1) %>
-                </button>
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+              <div class="bg-white p-3 rounded">
+                <div class="text-right">
+                  <button type="button" onclick="redirectStatus()" class="btn btn-primary">
+                    Status: <%= mode[0].toUpperCase() + mode.substr(1) %>
+                  </button>
+                </div>
+                <h3>Car Location</h3>
+                <br>
+                <div id="map" style="height: 500px"></div>
+              </div>
+
+              <br />
+
+              <div class="bg-white p-3 rounded">
+                <h3>Location History</h3>
+                <br />
+                <div class="row text-center">
+                  <div class="col-5">Time</div>
+                  <div class="col-7">Location</div>
+                </div>
+                <hr />
+                <div id="table-container">
+                  <!-- Filled with JavaScript -->
+                </div>
               </div>
               <br />
-              <h3>Car Location</h3>
-              <div id="map" style="height: 500px"></div>
             </div>
-
-            <br />
-
-            <div class="bg-white p-3 rounded">
-              <h3>Location History</h3>
-              <br />
-              <div class="row text-center">
-                <div class="col-5">Time</div>
-                <div class="col-7">Location</div>
-              </div>
-              <hr />
-              <div id="table-container">
-                <!-- Filled with JavaScript -->
-              </div>
-            </div>
-            <br />
-          </div>
-          <!-- /.container-fluid -->
+            <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
 
         <!-- Footer -->
         <%- include('../partials/footer') %>
-        <!-- End of Footer -->
+          <!-- End of Footer -->
       </div>
       <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
-    <!-- Logout Modal-->
-    <div
-      class="modal fade"
-      id="logoutModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-            <button
-              class="close"
-              type="button"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Select "Logout" below if you are ready to end your current session.
-          </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-secondary"
-              type="button"
-              data-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <a class="btn btn-primary" href="index.html">Logout</a>
-          </div>
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Select "Logout" below if you are ready to end your current session.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            Cancel
+          </button>
+          <a class="btn btn-primary" href="index.html">Logout</a>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <%- include('../partials/script') %>
+  <!-- Bootstrap core JavaScript-->
+  <%- include('../partials/script') %>
 
     <script>
+      var marker;
+      var map;
       let licensePlate = "<%= licensePlate %>";
-        function showPosition(position) {
-            var latitude = position.lat;
-            var longitude = position.long;
-            var container = L.DomUtil.get('map');
-            if(container != null){
-                container._leaflet_id = null;
-            }
-            var map = L.map('map').setView([latitude, longitude], 15);
-
-            L.tileLayer(
-                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg', {
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                    maxZoom: 18,
-                    id: 'mapbox/streets-v11',
-                    tileSize: 512,
-                    zoomOffset: -1,
-                    accessToken: 'pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg'
-                }).addTo(map);
-
-                var popup = L.popup()
-                    .setLatLng([latitude, longitude])
-                    .setContent(licensePlate)
-                    .openOn(map);
+      function showPosition(position) {
+        var latitude = position.lat;
+        var longitude = position.long;
+        var container = L.DomUtil.get('map');
+        if (container != null) {
+          container._leaflet_id = null;
         }
+        var map = L.map('map').setView([latitude, longitude], 15);
 
-        const printTable = (locations) => {
-            const container = document.getElementById('table-container')
-            locations.forEach(element => {
-                let row = document.createElement('div')
-                row.className = 'row text-center'
+        L.tileLayer(
+          'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg', {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          maxZoom: 18,
+          id: 'mapbox/streets-v11',
+          tileSize: 512,
+          zoomOffset: -1,
+          accessToken: 'pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg'
+        }).addTo(map);
 
-                let left = document.createElement('div')
-                left.className = 'col-5'
-                let date = new Date(element.createdAt).toLocaleDateString()
-                let time = new Date(element.createdAt).toLocaleTimeString('id', { hc: "h24"})
-                left.innerText = date + ' ' + time
+        marker = L.marker([latitude, longitude])
+          .addTo(map)
+          .addEventListener("click", function (e) {
+            map.panTo(this.getLatLng());
+          });
+      }
 
-                let right = document.createElement('div')
-                right.className = 'col-7'
-                right.innerText = element.lat + ', ' + element.long + '\n'
+      const printTable = (locations) => {
+        const container = document.getElementById('table-container')
+        locations.forEach(element => {
+          let row = document.createElement('div')
+          row.className = 'row text-center'
 
-                row.appendChild(left)
-                row.appendChild(right)
-                container.appendChild(row)
-            });
-        }
+          let left = document.createElement('div')
+          left.className = 'col-5'
+          let date = new Date(element.createdAt).toLocaleDateString()
+          let time = new Date(element.createdAt).toLocaleTimeString('id', { hc: "h24" })
+          left.innerText = date + ' ' + time
 
-        const clearTable = () => {
-            document.getElementById('table-container').innerHTML = ""
-            document.getElementById('map').innerHTML = ""
-        }
+          let right = document.createElement('div')
+          right.className = 'col-7'
+          right.innerText = element.lat + ', ' + element.long + '\n'
 
-        const getData = () => {
-            $.get("/api/dashboard/" + <%= deviceID %> + "/data", (data, status) => {
-                let position = {
-                    lat : data[0].lat,
-                    long : data[0].long
-                }
-                clearTable()
-                showPosition(position)
-                printTable(data)
-                data = undefined
-                delete(data)
-            })
-        }
-        getData()
-        setInterval(getData, 5000)
+          row.appendChild(left)
+          row.appendChild(right)
+          container.appendChild(row)
+        });
+      }
 
-        const redirectStatus = () => {
-            document.location.href = '/api/dashboard/' + <%= deviceID %> + '/status';
-        }
+      const clearTable = () => {
+        document.getElementById('table-container').innerHTML = ""
+        // document.getElementById('map').innerHTML = ""
+      }
+
+      let init = 1;
+
+      const getData = () => {
+        $.get("/api/dashboard/" + <%= deviceID %> + "/data", (data, status) => {
+          let position = {
+            lat: data[0].lat,
+            long: data[0].long
+          }
+          if (init === 1) {
+            init = 0;
+            showPosition(position);
+          }
+          clearTable()
+          marker.setLatLng([position.lat, position.long])
+          printTable(data)
+          data = undefined
+          delete (data)
+        })
+      }
+      getData()
+      setInterval(getData, 5000)
+
+      const redirectStatus = () => {
+        document.location.href = '/api/dashboard/' + <%= deviceID %> + '/status';
+      }
 
 
         // var newest = document.getElementById('location-data').innerText.trim()
@@ -199,5 +190,6 @@
 
         // showPosition(position)
     </script>
-  </body>
+</body>
+
 </html>
