@@ -2,103 +2,102 @@
 <html lang="en">
 
 <head>
-    <%- include('../partials/dashboardheader') %> 
+  <%- include('../partials/dashboardheader') %>
 </head>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
 
-        <!-- Sidebar -->
-        <%- include('../partials/sidebar') %> 
-        <!-- End of Sidebar -->
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+      <!-- End of Sidebar -->
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
-            <div id="content">
+        <!-- Main Content -->
+        <div id="content">
 
-                <!-- Topbar -->
-                <%- include('../partials/topbar', user) %> 
-                <!-- End of Topbar -->
+          <!-- Topbar -->
+          <%- include('../partials/topbar', user) %>
+            <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                  <h1>Welcome, <%= user.name %>! </h1>
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+              <h1>Welcome, <%= user.name %>!</h1>
 
-                  <div class="bg-white p-3 rounded">
-                    <div class="row">
-                      <div class="col">
-                        <h3 class="text-left">List of Paired Devices</h3>
-                      </div>
-                      <div class="col text-right">
-                        <button type="button" class="btn btn-primary" onclick="redirectPairing()">Add New Device</button>
-                      </div>
-                    </div>
-                    <br>
-                    <div class="row text-center justify-content-center">
-                      <div class="col">Device ID</div>
-                      <div class="col">Car Model</div>
-                      <div class="col">Status</div>
-                      <div class="col">License Plate</div>
-                    </div>
-                    <hr>
-                    <div id="table-container">
-                      <!-- filled with JS -->
-                    </div>
+              <div class="bg-white p-3 rounded">
+                <div class="row">
+                  <div class="col">
+                    <h3 class="text-left">List of Paired Devices</h3>
+                  </div>
+                  <div class="col text-right">
+                    <button type="button" class="btn btn-primary" onclick="redirectPairing()">Add New Device</button>
                   </div>
                 </div>
-                <!-- End of Page Content -->
-
+                <br>
+                <div class="row text-center justify-content-center">
+                  <div class="col">Car Model</div>
+                  <div class="col">Status</div>
+                  <div class="col">License Plate</div>
+                </div>
+                <hr>
+                <div id="table-container">
+                  <!-- filled with JS -->
+                </div>
+              </div>
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <%- include('../partials/footer') %> 
-            <!-- End of Footer -->
+            <!-- End of Page Content -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Main Content -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Footer -->
+        <%- include('../partials/footer') %>
+          <!-- End of Footer -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+      </div>
+      <!-- End of Content Wrapper -->
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="index.html">Logout</a>
-                </div>
-            </div>
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="index.html">Logout</a>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <%- include('../partials/script') %> 
-        
+  <!-- Bootstrap core JavaScript-->
+  <%- include('../partials/script') %>
+
     <script>
       const table = document.getElementById("table-container");
       const getDevices = () => {
         $.get("/api/dashboard/getdevices", (data, status) => {
           console.log(data);
-          if (data.length === 0){
+          if (data.length === 0) {
             let text = document.createElement('div');
             text.className = 'text-center col';
             text.innerText = 'No Device Paired';
@@ -107,10 +106,6 @@
             data.forEach((element) => {
               let row = document.createElement('div');
               row.className = 'row text-center justify-content-center';
-              
-              let imei = document.createElement('div');
-              imei.className = 'col';
-              imei.innerHTML = `<a href="./dashboard/${element.imei}">${element.imei}</a>`;
 
               let model = document.createElement('div');
               model.className = 'col';
@@ -122,9 +117,8 @@
 
               let license = document.createElement('div');
               license.className = 'col';
-              license.innerText = element.licensePlate;
+              license.innerHTML = `<a href="./dashboard/${element.imei}">${element.licensePlate}</a>`;
 
-              row.appendChild(imei);
               row.appendChild(model);
               row.appendChild(status);
               row.appendChild(license);
@@ -139,7 +133,7 @@
       const redirectPairing = () => {
         document.location.href = '/api/pairing';
       };
-      
+
     </script>
 
 </body>
