@@ -91,9 +91,9 @@ router.post("/dashboard/:deviceID/status", validate, async (req, res) => {
       device.set({
         mode: req.body.action,
       });
-      await device.save().then((data) => {
+      await device.save().then(() => {
         // console.log(data);
-        res.send(data);
+        res.send('OK');
       });
     },
   );
@@ -134,7 +134,7 @@ router.post("/pairing", validate, async (req, res) => {
       res.redirect(`/api/dashboard/${req.body.deviceID}`);
     })
     .catch((err) => {
-      res.status(err.code).send(err.message);
+      req.flash(err.message);
     });
 });
 

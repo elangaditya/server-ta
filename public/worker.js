@@ -22,8 +22,7 @@ self.addEventListener("install", (e) => {
           "/vendor/bootstrap/js/bootstrap.bundle.min.js",
           "/vendor/jquery-easing/jquery.easing.min.js",
           "/js/sb-admin-2.min.js",
-        ])
-      )
+        ]))
   );
 });
 
@@ -36,27 +35,31 @@ self.addEventListener("activate", (e) => {
         keys
           .filter((key) => key !== staticCacheName && key !== dynamicCache)
           .map((key) => caches.delete(key))
-      )
-    )
+      ))
   );
 });
 
 // Fetch Event
-self.addEventListener("fetch", (e) => {
-  e.respondWith(
-    caches
-      .match(e.request)
-      .then(
-        (response) =>
-          response ||
-          fetch(e.request).then((fetchRes) =>
-            caches.open(dynamicCache).then((cache) => {
-              cache.put(e.request.url, fetchRes.clone());
-              return fetchRes;
-            })
-          )
-      )
-      .catch(() => caches.match("./error.html"))
+// self.addEventListener("fetch", (e) => {
+//   e.respondWith(
+//     caches
+//       .match(e.request)
+//       .then(
+//         (response) =>
+//           response
+//           || fetch(e.request).then((fetchRes) =>
+//             caches.open(dynamicCache).then((cache) => {
+//               cache.put(e.request.url, fetchRes.clone());
+//               return fetchRes;
+//             }))
+//       )
+//       .catch(() => caches.match("./error.html"))
+//   );
+// });
+
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
 

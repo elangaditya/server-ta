@@ -3,7 +3,9 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const cookieParser = require('cookie-parser');
+const flash = require("express-flash-notification");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 dotenv.config();
 
@@ -12,6 +14,16 @@ const path = require('path');
 
 const app = express();
 app.use(cookieParser());
+app.use(
+  session({
+    secret: "super-secret-key",
+    key: "super-secret-cookie",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 },
+  }),
+);
+app.use(flash(app));
 
 const corsOptions = {
   origin: 'http://localhost:8081',
