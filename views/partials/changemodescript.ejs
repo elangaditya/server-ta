@@ -1,25 +1,29 @@
 <script>
-    const deviceID = <%= deviceID %>
-    const changeModeIdle = () => {
-        $.post('/api/dashboard/' + deviceID + '/status', {action: 'idle'});
-        setTimeout(document.location.reload(), 1000);
-    };
-    const changeModeSurveillance = () => {
-        $.post('/api/dashboard/' + deviceID + '/status', {action: 'surveillance'});
-        setTimeout(document.location.reload(), 1000);
-    };
-    const changeModeIntense = () => {
-        $.post('/api/dashboard/' + deviceID + '/status', {action: 'intense'});
-        setTimeout(document.location.reload(), 1000);
-    };
+  const deviceID = <%= deviceID %>
+  const content = document.getElementById("page-content")
+  const changeMode = (mode) => {
+    postData(mode).then(() => {
+      document.location.href = '/api/dashboard/' + <%= deviceID %> + '/status';
+    })    
+  };
 
-    const reportCase = () => {
-        $.post('/api/dashboard/' + deviceID + '/report', (data, status) => {
-          if (data.code === 400) {
-            alert('There is already an ongoing case for this vehicle.')
-          } else {
-            alert(`Case created for: \nVehicle: ${data.vehicleName}\nPlate Number: ${data.licensePlate}\nCase ID: ${data.id}`);
-          };
-        })
-    };
+  const postData = (mode) => {
+    return new Promise((resolve, reject) => {
+      $.post('/api/dashboard/' + deviceID + '/status', { action: mode }, (data, status) => {
+        if (status === "success") {
+          resolve();
+        }
+      });
+    })
+  }
+
+  const reportCase = () => {
+    $.post('/api/dashboard/' + deviceID + '/report', (data, status) => {
+      if (data.code === 400) {
+        alert('There is already an ongoing case for this vehicle.')
+      } else {
+        alert(`Case created for: \nVehicle: ${data.vehicleName}\nPlate Number: ${data.licensePlate}\nCase ID: ${data.id}`);
+      };
+    })
+  };
 </script>

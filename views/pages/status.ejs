@@ -25,13 +25,16 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <% if (mode === 'idle') { %>
-                    <%- include('../partials/idle') %>
-                <% } else if (mode === 'surveillance') { %>
-                    <%- include('../partials/surveillance') %>
-                <% } else if (mode === 'intense') { %>
-                    <%- include('../partials/intense') %>
-                <% } %> 
+                <div id="page-content">
+                <% if (mode==='idle' ) { %>
+                  <%- include('../partials/idle') %>
+                    <% } else if (mode==='surveillance' ) { %>
+                      <%- include('../partials/surveillance') %>
+                        <% } else if (mode==='intense' ) { %>
+                          <%- include('../partials/intense') %>
+                            <% } %>
+                </div>
+                
                 <!-- /.container-fluid -->
                 <br>
             </div>
@@ -79,14 +82,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <%- include('../partials/script') %>
 
     <%- include('../partials/changemodescript') %> 
 

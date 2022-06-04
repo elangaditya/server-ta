@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable max-len */
@@ -7,6 +8,7 @@ const dynamicCache = "dynamic-v2";
 // Install Service Worker
 
 self.addEventListener("install", (e) => {
+  self.skipWaiting();
   e.waitUntil(
     caches
       .open(staticCacheName)

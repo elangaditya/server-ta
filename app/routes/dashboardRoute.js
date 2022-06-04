@@ -1,22 +1,22 @@
-const router = require('express').Router();
-const { Op } = require('sequelize');
-const db = require('../models');
-const validate = require('./userValidation');
-const MqttHandler = require('../../mqtt/mqttHandler');
+const router = require("express").Router();
+const { Op } = require("sequelize");
+const db = require("../models");
+const validate = require("./userValidation");
+const MqttHandler = require("../../mqtt/mqttHandler");
 
 const Location = db.location;
 const Device = db.device;
 const User = db.user;
 const Case = db.case;
 
-router.get('/dashboard', validate, async (req, res) => {
+router.get("/dashboard", validate, async (req, res) => {
   // console.log(req.user);
-  res.render('pages/home', {
+  res.render("pages/home", {
     user: req.user,
   });
 });
 
-router.get('/dashboard/getdevices', validate, async (req, res) => {
+router.get("/dashboard/getdevices", validate, async (req, res) => {
   await Device.findAll({
     where: { user_id: req.user.id },
   }).then((data) => {
@@ -24,7 +24,7 @@ router.get('/dashboard/getdevices', validate, async (req, res) => {
   });
 });
 
-router.get('/dashboard/:deviceID/data', validate, async (req, res) => {
+router.get("/dashboard/:deviceID/data", validate, async (req, res) => {
   const locations = await Location.findAll({
     where: { device_imei: req.params.deviceID },
     raw: true,
@@ -34,99 +34,111 @@ router.get('/dashboard/:deviceID/data', validate, async (req, res) => {
   res.send(array);
 });
 
-router.get('/dashboard/:deviceID', validate, async (req, res) => {
+router.get("/dashboard/:deviceID", validate, async (req, res) => {
   await Device.findOne({
     where: { imei: req.params.deviceID, user_id: req.user.id },
-  }).then((data) => {
-    if (data == null) {
-      const err = new Error('Device not found');
-      err.code = 404;
-      throw err;
-    }
-
-    res.render('pages/userdash', {
-      deviceID: req.params.deviceID,
-      licensePlate: String(data.licensePlate),
-      mode: data.mode,
-      user: req.user,
-    });
   })
+    .then((data) => {
+      if (data == null) {
+        const err = new Error("Device not found");
+        err.code = 404;
+        throw err;
+      }
+
+      res.render("pages/userdash", {
+        deviceID: req.params.deviceID,
+        licensePlate: String(data.licensePlate),
+        mode: data.mode,
+        user: req.user,
+      });
+    })
     .catch((err) => {
       res.status(err.code).send(err.message);
     });
 });
 
-router.get('/dashboard/:deviceID/status', validate, async (req, res) => {
+router.get("/dashboard/:deviceID/status", validate, async (req, res) => {
   await Device.findOne({
     where: { imei: req.params.deviceID, user_id: req.user.id },
-  }).then((data) => {
-    if (data == null) {
-      const err = new Error('Device not found');
-      err.code = 404;
-      throw err;
-    }
-    res.render('pages/status', {
-      deviceID: req.params.deviceID,
-      mode: data.mode,
-      user: req.user,
+  })
+    .then((data) => {
+      if (data == null) {
+        const err = new Error("Device not found");
+        err.code = 404;
+        throw err;
+      }
+      res.render("pages/status", {
+        deviceID: req.params.deviceID,
+        mode: data.mode,
+        user: req.user,
+      });
+    })
+    .catch((err) => {
+      res.status(err.code).send(err.message);
     });
-  }).catch((err) => {
-    res.status(err.code).send(err.message);
-  });
 });
 
-router.post('/dashboard/:deviceID/status', validate, async (req, res) => {
+router.post("/dashboard/:deviceID/status", validate, async (req, res) => {
   const topic = `action/${req.params.deviceID}`;
   // console.log(topic);
-  const mqttUpdate = new MqttHandler('mode-update');
+  const mqttUpdate = new MqttHandler("mode-update");
   mqttUpdate.connect();
   mqttUpdate.sendMessage(req.body, topic);
+  // console.log(req.body.action);
 
-  const device = await Device.update(
-    { mode: req.body.action },
-    { where: { imei: req.params.deviceID } },
+  await Device.findOne({ where: { imei: req.params.deviceID } }).then(
+    async (device) => {
+      device.set({
+        mode: req.body.action,
+      });
+      await device.save().then((data) => {
+        // console.log(data);
+        res.send(data);
+      });
+    },
   );
-  res.send(device);
 });
 
-router.get('/pairing', validate, (req, res) => {
-  res.render('pages/pairing');
+router.get("/pairing", validate, (req, res) => {
+  res.render("pages/pairing");
 });
 
-router.post('/pairing', validate, async (req, res) => {
+router.post("/pairing", validate, async (req, res) => {
   await Device.findOne({
     where: {
       imei: req.body.deviceID,
     },
-  }).then(async (data) => {
-    if (data == null) {
-      const err = new Error('Device not found');
-      err.code = 404;
-      throw err;
-    }
-    if (data.user_id !== null) {
-      // eslint-disable-next-line no-throw-literal
-      const err = new Error('Device already paired');
-      err.code = 406;
-      throw err;
-    }
-    const user = await User.findOne({
-      where: {
-        id: req.user.id,
-      },
+  })
+    .then(async (data) => {
+      if (data == null) {
+        const err = new Error("Device not found");
+        err.code = 404;
+        throw err;
+      }
+      if (data.user_id !== null) {
+        // eslint-disable-next-line no-throw-literal
+        const err = new Error("Device already paired");
+        err.code = 406;
+        throw err;
+      }
+      const user = await User.findOne({
+        where: {
+          id: req.user.id,
+        },
+      });
+      data.setUser(user);
+      data.vehicleName = req.body.vehicleName;
+      data.licensePlate = req.body.licensePlate;
+      data.color = req.body.color;
+      data.save();
+      res.redirect(`/api/dashboard/${req.body.deviceID}`);
+    })
+    .catch((err) => {
+      res.status(err.code).send(err.message);
     });
-    data.setUser(user);
-    data.vehicleName = req.body.vehicleName;
-    data.licensePlate = req.body.licensePlate;
-    data.color = req.body.color;
-    data.save();
-    res.redirect(`/api/dashboard/${req.body.deviceID}`);
-  }).catch((err) => {
-    res.status(err.code).send(err.message);
-  });
 });
 
-router.post('/dashboard/:deviceID/report', validate, async (req, res) => {
+router.post("/dashboard/:deviceID/report", validate, async (req, res) => {
   const device = await Device.findOne({
     where: { imei: req.params.deviceID, user_id: req.user.id },
   });
@@ -138,29 +150,31 @@ router.post('/dashboard/:deviceID/report', validate, async (req, res) => {
         [Op.not]: 2,
       },
     },
-  }).then(async (data) => {
-    // console.log(data);
-    if (data !== null) {
-      // console.log('Case exist');
-      const err = new Error('There is already an ongoing case for this vehicle.');
-      err.code = 400;
-      throw err;
-    } else {
-      // console.log('No case');
-      const newCase = await Case.create({
-        ownerName: req.user.name,
-        licensePlate: device.licensePlate,
-        vehicleName: device.vehicleName,
-        color: device.color,
-      });
+  })
+    .then(async (data) => {
+      // console.log(data);
+      if (data !== null) {
+        // console.log('Case exist');
+        const err = new Error("There is already an ongoing case for this vehicle.");
+        err.code = 400;
+        throw err;
+      } else {
+        // console.log('No case');
+        const newCase = await Case.create({
+          ownerName: req.user.name,
+          licensePlate: device.licensePlate,
+          vehicleName: device.vehicleName,
+          color: device.color,
+        });
 
-      newCase.setDevice(device);
+        newCase.setDevice(device);
 
-      res.send(newCase);
-    }
-  }).catch((err) => {
-    res.send(err);
-  });
+        res.send(newCase);
+      }
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 });
 
 module.exports = router;
