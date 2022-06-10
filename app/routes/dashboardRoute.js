@@ -177,4 +177,14 @@ router.post("/dashboard/:deviceID/report", validate, async (req, res) => {
     });
 });
 
+router.get('/profile', validate, async (req, res) => {
+  await User.findOne({
+    where: {
+      id: req.user.id,
+    },
+  }).then((data) => {
+    res.render("pages/profile", { user: data });
+  });
+});
+
 module.exports = router;

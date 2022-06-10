@@ -17,6 +17,7 @@
                         <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" style="width: 7em;">
                     </div>
                     <br><br>
+                    <%- locals.flash %>
                     <form name="frm" action="/auth/login" method="POST">
                         <div class="form-group">
                             <input type="text" class="form-control p-4" id="Email" placeholder="Email" name = "email">
