@@ -60,11 +60,15 @@ router.post('/login', async (req, res) => {
 
   // Auth-token
   const token = jwt.sign({ id: police.id, name: police.name }, process.env.POLICE_TOKEN_SECRET, {
-    expiresIn: '1h',
+    expiresIn: '2h',
   });
   res.cookie('police_token', token, {
     httpOnly: true, secure: false,
   }).redirect('/police/api/home');
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("police_token").redirect("/police/auth/login");
 });
 
 module.exports = router;

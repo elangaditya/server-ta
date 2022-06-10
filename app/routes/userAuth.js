@@ -62,11 +62,15 @@ router.post('/login', async (req, res) => {
 
   // Auth-token
   const token = jwt.sign({ id: user.id, name: user.name }, process.env.TOKEN_SECRET, {
-    expiresIn: '24h',
+    expiresIn: '2h',
   });
   res.cookie('auth_token', token, {
     httpOnly: true, secure: false,
   }).redirect('/api/dashboard');
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("auth_token").redirect("/auth/login");
 });
 
 // EMAIL CONFIRMATION ROUTE
