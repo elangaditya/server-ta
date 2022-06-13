@@ -4,6 +4,8 @@
 <head>
   <%- include('../partials/dashboardheader') %>
 
+    <title>Home</title>
+
     <!-- Import Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
@@ -18,107 +20,108 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <!-- <%- include('../partials/sidebarpolice') %>  -->
-    <!-- End of Sidebar -->
+    <%- include('../partials/sidebarpolice') %>
+      <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+        <!-- Main Content -->
+        <div id="content">
 
-        <!-- Topbar -->
-        <%- include('../partials/topbar', user) %>
-          <!-- End of Topbar -->
+          <!-- Topbar -->
+          <%- include('../partials/topbar', user) %>
+            <!-- End of Topbar -->
 
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-            <!-- Content Row -->
-            <div class="row">
-              <div class="col">
-                <div class="row">
+              <!-- Content Row -->
+              <div class="row">
+                <div class="col">
+                  <div class="row">
 
-                  <!-- User Reported Card -->
-                  <div class="col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                              User Reported</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                              <%= resObject.totalCases %>
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Case Completed Card -->
-                  <div class="col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                              Case Completed</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                              <%= resObject.completed %>
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="row">
-                  <!-- Case On Progress Card -->
-                  <div class="col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                              Case On Progress
-                            </div>
-                            <div class="col-auto">
-                              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                <%= resObject.onProgress %>
+                    <!-- User Reported Card -->
+                    <div class="col-md-6 mb-4">
+                      <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                User Reported</div>
+                              <div class="h5 mb-0 font-weight-bold text-gray-800" id="reportedCard">
+                                <%= resObject.totalCases %>
                               </div>
                             </div>
-                          </div>
-                          <div class="col-auto">
-                            <i class="fas fa-spinner fa-2x text-gray-300"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Case Not Taken Card -->
-                  <div class="col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                      <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                          <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                              Case Not Taken</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                              <%= resObject.notTaken %>
+                            <div class="col-auto">
+                              <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
                             </div>
                           </div>
-                          <div class="col-auto">
-                            <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Case Completed Card -->
+                    <div class="col-md-6 mb-4">
+                      <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Case Completed</div>
+                              <div class="h5 mb-0 font-weight-bold text-gray-800" id="completedCard">
+                                <%= resObject.completed %>
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row">
+                    <!-- Case On Progress Card -->
+                    <div class="col-md-6 mb-4">
+                      <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Case On Progress
+                              </div>
+                              <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="onProgressCard">
+                                  <%= resObject.onProgress %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-spinner fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Case Not Taken Card -->
+                    <div class="col-md-6 mb-4">
+                      <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Case Not Taken</div>
+                              <div class="h5 mb-0 font-weight-bold text-gray-800" id="notTakenCard">
+                                <%= resObject.notTaken %>
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -126,76 +129,93 @@
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Select Case -->
-            <div class="text-right">
-              <select class="p-2 border" style="width: 10em;" name="choose" id="choose" onchange="onChooseCase()">
-                <option value="Select Case">Select Case</option>
-              </select>
-            </div>
-            <br>
-
-            <!-- Map -->
-            <div class="bg-white p-3 rounded">
-              <h3>Car Location</h3>
-              <div id="map" style="height:500px;"></div>
-              <br>
-              <div class="text-center">
-                <button type="button" class="btn btn-primary btn-sm pl-4 pr-4" onclick="return getlokasi();">Track
-                  Car</button>
+              <!-- Select Case -->
+              <div class="text-right">
+                <select class="p-2 border" style="width: 10em;" name="choose" id="choose" onchange="onChooseCase()">
+                  <option value="Select Case">Select Case</option>
+                </select>
               </div>
-            </div>
+              <br>
 
-            <br>
-
-            <!-- Information -->
-            <div class="bg-white p-3 rounded">
-              <h3>Car Information</h3><br>
-              <div class="row justify-content-end">
-                <div class="col-5 text-left">
-                  Owner Name <br><br>
-                  License Plate<br><br>
-                  Car Model<br><br>
-                  Color
+              <!-- Map -->
+              <div class="bg-white p-3 rounded">
+                <div class="float-right">
+                  <button type="button" class="btn btn-warning" id="status-button">
+                    -
+                  </button>
                 </div>
-                <div class="col-5" id="card-info">
-                  <!-- Eugene<br><br>
+                <h3>Car Location</h3>
+                <br>
+                <div id="map" style="height:500px;"></div>
+                <br>
+                <div class="text-center">
+                  <button type="button" class="btn btn-primary btn-sm pl-4 pr-4" onclick="return getlokasi();">Track
+                    Car</button>
+                  <button type="button" class="btn btn-success btn-sm pl-4 pr-4" onclick="caseHandler(2)">Complete
+                    Case</button>
+                  <button type="button" class="btn btn-warning btn-sm pl-4 pr-4" onclick="caseHandler(1)">Take
+                    Case</button>
+                  <button type="button" class="btn btn-secondary btn-sm pl-4 pr-4" onclick="caseHandler(0)">Drop
+                    Case</button>
+                </div>
+              </div>
+
+              <br>
+
+              <!-- Information -->
+              <div class="bg-white p-3 rounded">
+                <h3>Car Information</h3><br>
+                <div class="row justify-content-end">
+                  <div class="col-5 text-left">
+                    Owner Name <br><br>
+                    License Plate<br><br>
+                    Car Model<br><br>
+                    Color
+                  </div>
+                  <div class="col-5" id="card-info">
+                    <!-- Eugene<br><br>
                                 B 123 AB<br><br>
                                 Pajero<br><br>
                                 Toyota<br><br>
                                 Black -->
+                  </div>
                 </div>
+                <br>
+                <!-- <div class="text-center">
+                  <a href="FullInformation.html" class="btn btn-primary btn-sm pl-4 pr-4">Full Information</a>
+                </div> -->
+                <br>
               </div>
+
               <br>
-              <div class="text-center">
-                <a href="FullInformation.html" class="btn btn-primary btn-sm pl-4 pr-4">Full Information</a>
-              </div>
-              <br>
-            </div>
-
-            <br>
 
 
-            <!-- History -->
-            <div class="bg-white p-3 rounded">
-              <h3>Location History</h3><br>
-              <div class="row text-center">
-                <div class="col-5">
-                  Time
+              <!-- History -->
+              <div class="bg-white p-3 rounded">
+                <h3>Location History</h3><br>
+                <!-- <div class="text-right mt-3">
+                  <select class="p-2 border-0 bg-warning" style="width: 10em;"
+                    onchange="onChooseStatus(this.options[this.selectedIndex].value)">
+                    <option value="null">Change Status</option>
+                    <option value="1">Case On Progress</option>
+                    <option value="2">Case Completed</option>
+                    <option value="0">Case Not Taken</option>
+                  </select>
+                </div> -->
+                <div class="row text-center">
+                  <div class="col-5">
+                    Time
+                  </div>
+                  <div class="col-7">
+                    Location
+                  </div>
                 </div>
-                <div class="col-4">
-                  Location
-                </div>
-                <div class="col-3">
+                <hr>
+                <div id="table-container">
+                  <!-- Filled with JavaScript -->
 
-                </div>
-              </div>
-              <hr>
-              <div id="table-container">
-                <!-- Filled with JavaScript -->
-
-                <!-- <div class="row text-center">
+                  <!-- <div class="row text-center">
                             <div class="col-5">
                                 18:20:30 <br>
                             </div>
@@ -231,207 +251,213 @@
                                     Car</button><br>
                             </div>
                         </div> -->
-              </div>
+                </div>
 
-              <div class="text-right mt-3">
-                <select class="p-2 border-0 bg-warning" style="width: 10em;">
-                  <option value="Change Status">Change Status</option>
-                  <option value="Change Status">Case On Progress</option>
-                  <option value="Change Status">Case Completed</option>
-                  <option value="Change Status">Case Not Taken</option>
-                </select>
+                <br>
               </div>
+              <!-- /.container-fluid -->
 
-              <br>
             </div>
-            <!-- /.container-fluid -->
+            <!-- End of Main Content -->
 
-          </div>
-          <!-- End of Main Content -->
-
-          <!-- Footer -->
-          <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-              <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2022</span>
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+              <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                  <span>Copyright &copy; Your Website 2022</span>
+                </div>
               </div>
-            </div>
-          </footer>
-          <!-- End of Footer -->
+            </footer>
+            <!-- End of Footer -->
 
-      </div>
-      <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="index.html">Logout</a>
-          </div>
         </div>
+        <!-- End of Content Wrapper -->
+
       </div>
-    </div>
+      <!-- End of Page Wrapper -->
 
-    <%- include('../partials/script') %>
+      <!-- Scroll to Top Button-->
+      <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+      </a>
 
-    <!-- Custom Map -->
-    <script>
-      var map = L.map('map').setView([-6.1754, 106.8272], 15);
-      var marker = L.marker([-6.1754, 106.8272])
-        .addTo(map)
-        .addEventListener("click", (e) => {
-          map.panTo(this.getLatLng());
-        })
+      <%- include('../partials/script') %>
 
-      var devicePosition;
-
-      L.tileLayer(
-        'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-        accessToken: 'pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg'
-      }).addTo(map);
-
-      function getlokasi() {
-        //jika browser mendukung navigator.geolocation maka akan menjalankan perintah di bawahnya
-        if (navigator.geolocation) {
-          // getCurrentPosition digunakan untuk mendapatkan lokasi pengguna
-          //showPosition adalah fungsi yang akan dijalankan
-          navigator.geolocation.getCurrentPosition(showPositionKlik);
-        }
-      }
-
-      function showPositionKlik(position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-
-        L.tileLayer(
-          'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg', {
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-          maxZoom: 18,
-          id: 'mapbox/streets-v11',
-          tileSize: 512,
-          zoomOffset: -1,
-          accessToken: 'pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg'
-        }).addTo(map);
-
-        L.Routing.control({
-          waypoints: [
-            L.latLng(latitude, longitude),
-            L.latLng(devicePosition.lat, devicePosition.long)
-          ]
-        }).addTo(map);
-
-        var popup = L.popup()
-          .setLatLng([latitude, longitude])
-          .setContent("My Location")
-          .openOn(map);
-      }
-
-      let cases
-
-      const getDataInfo = () => {
-        $.get("/police/api/dashboard/data", (data, status) => {
-          var select = document.getElementById("choose");
-          console.log(data)
-          for (var i = 0; i < data.length; i++) {
-            var opt = data[i].id + " - " + data[i].ownerName;
-            var el = document.createElement("option");
-            el.textContent = opt;
-            el.value = opt;
-            select.appendChild(el);
-          }
-          cases = data
-        })
-      }
-
-      const printTable = (locations) => {
-        const container = document.getElementById('table-container')
-        locations.forEach(element => {
-          let row = document.createElement('div')
-          row.className = 'row text-center'
-
-          let left = document.createElement('div')
-          left.className = 'col-5'
-          let date = new Date(element.createdAt).toLocaleDateString()
-          let time = new Date(element.createdAt).toLocaleTimeString('id', { hc: "h24" })
-          left.innerText = date + ' ' + time
-
-          let right = document.createElement('div')
-          right.className = 'col-7'
-          right.innerText = element.lat + ', ' + element.long + '\n'
-
-          row.appendChild(left)
-          row.appendChild(right)
-          container.appendChild(row)
-        });
-      }
-
-      getDataInfo();
-
-      const onChooseCase = () => {
-        printInfo().then(() => {
-          map.panTo([devicePosition.lat, devicePosition.long]);
-        })
-      }
-
-      const printInfo = () => {
-        return new Promise((resolve, reject) => {
-          const container = document.getElementById('card-info')
-          var selectedCase = document.getElementById('choose').value
-          if (selectedCase !== "Select Case") {
-            var chosen = selectedCase.split(" ")
-            $.get(`/police/api/dashboard/data/${chosen[0]}`, (data, status) => {
-              container.innerHTML = `${data.ownerName} <br><br> ${data.licensePlate} <br><br> ${data.vehicleName} <br><br>  ${data.color} `;
+        <!-- Custom Map -->
+        <script>
+          var map = L.map('map').setView([-6.1754, 106.8272], 15);
+          var marker = L.marker([-6.1754, 106.8272])
+            .addTo(map)
+            .addEventListener("click", (e) => {
+              map.panTo(this.getLatLng());
             })
 
-            $.get(`/police/api/locationdata/${chosen[0]}`, (data, status) => {
-              console.log(data);
-              devicePosition = {
-                lat: data[0].lat,
-                long: data[0].long
+          var devicePosition;
+
+          L.tileLayer(
+            'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg'
+          }).addTo(map);
+
+          function getlokasi() {
+            //jika browser mendukung navigator.geolocation maka akan menjalankan perintah di bawahnya
+            if (navigator.geolocation) {
+              // getCurrentPosition digunakan untuk mendapatkan lokasi pengguna
+              //showPosition adalah fungsi yang akan dijalankan
+              navigator.geolocation.getCurrentPosition(showPositionKlik);
+            }
+          }
+
+          function showPositionKlik(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            L.tileLayer(
+              'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg', {
+              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+              maxZoom: 18,
+              id: 'mapbox/streets-v11',
+              tileSize: 512,
+              zoomOffset: -1,
+              accessToken: 'pk.eyJ1Ijoia2hvaXJvbnkiLCJhIjoiY2t6c2w1anA5MHFyNjJwbzF3dHRzMmlrbSJ9.CvST75663DLudTug1RmUvg'
+            }).addTo(map);
+
+            L.Routing.control({
+              waypoints: [
+                L.latLng(latitude, longitude),
+                L.latLng(devicePosition.lat, devicePosition.long)
+              ]
+            }).addTo(map);
+
+            var popup = L.popup()
+              .setLatLng([latitude, longitude])
+              .setContent("My Location")
+              .openOn(map);
+          }
+
+          let cases
+
+          const getDataInfo = () => {
+            $.get("/police/api/dashboard/data", (data, status) => {
+              var select = document.getElementById("choose");
+              console.log(data)
+              for (var i = 0; i < data.length; i++) {
+                var opt = data[i].id + " - " + data[i].ownerName;
+                var el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                select.appendChild(el);
               }
-              clearTable()
-              marker.setLatLng([devicePosition.lat, devicePosition.long]);
-              printTable(data)
-              if (status === "success") {
-                resolve();
-              }
-              // data = undefined
-              // delete (data)
+              cases = data
             })
           }
-        })
-      }
 
-      const clearTable = () => {
-        document.getElementById('table-container').innerHTML = ""
-        // document.getElementById('map').innerHTML = ""
-      }
+          const printTable = (locations) => {
+            const container = document.getElementById('table-container')
+            locations.forEach(element => {
+              let row = document.createElement('div')
+              row.className = 'row text-center'
 
-      setInterval(printInfo, 5000);
-    </script>
+              let left = document.createElement('div')
+              left.className = 'col-5'
+              let date = new Date(element.createdAt).toLocaleDateString()
+              let time = new Date(element.createdAt).toLocaleTimeString('id', { hc: "h24" })
+              left.innerText = date + ' ' + time
+
+              let right = document.createElement('div')
+              right.className = 'col-7'
+              right.innerText = element.lat + ', ' + element.long + '\n'
+
+              row.appendChild(left)
+              row.appendChild(right)
+              container.appendChild(row)
+            });
+          }
+
+          getDataInfo();
+
+          const onChooseCase = () => {
+            printInfo().then(() => {
+              map.panTo([devicePosition.lat, devicePosition.long]);
+            })
+          }
+
+          const caseHandler = (value) => {
+            console.log(value)
+            const caseId = document.getElementById('choose').value.split(" ")[0]
+            statusChangeUtil(value, caseId).then(() => {
+              $.get("/police/api/dashboard/statistics", (data, status) => {
+                document.getElementById('reportedCard').innerText = data.totalCases
+                document.getElementById('completedCard').innerText = data.completed
+                document.getElementById('onProgressCard').innerText = data.onProgress
+                document.getElementById('notTakenCard').innerText = data.notTaken
+              })
+            })
+          }
+
+          const statusChangeUtil = (value, caseId) => {
+            return new Promise((resolve, reject) => {
+              $.post("/police/api/dashboard/mode", { caseId: caseId, status: value }, (data, status) => {
+                if (status === 'success') {
+                  resolve();
+                }
+              })
+            })
+          }
+
+          const printInfo = () => {
+            return new Promise((resolve, reject) => {
+              const container = document.getElementById('card-info')
+              var selectedCase = document.getElementById('choose').value
+              if (selectedCase !== "Select Case") {
+                var chosen = selectedCase.split(" ")
+                $.get(`/police/api/dashboard/data/${chosen[0]}`, (data, status) => {
+                  container.innerHTML = `${data.ownerName} <br><br> ${data.licensePlate} <br><br> ${data.vehicleName} <br><br>  ${data.color} `;
+                  const button = document.getElementById('status-button')
+                  switch (data.status) {
+                    case 0:
+                      button.innerText = 'Not taken'
+                      break;
+                    case 1:
+                      button.innerText = 'On Progress'
+                      break;
+                    case 2:
+                      button.innerText = 'Completed'
+                  }
+                })
+
+                $.get(`/police/api/locationdata/${chosen[0]}`, (data, status) => {
+                  if (data.length !== 0) {
+                    devicePosition = {
+                      lat: data[0].lat,
+                      long: data[0].long
+                    }
+                    clearTable()
+                    marker.setLatLng([devicePosition.lat, devicePosition.long]);
+                    printTable(data)
+                    if (status === "success") {
+                      resolve();
+                    }
+                  // data = undefined
+                  // delete (data)
+                  }
+                })
+              }
+            })
+          }
+
+          const clearTable = () => {
+            document.getElementById('table-container').innerHTML = ""
+            // document.getElementById('map').innerHTML = ""
+          }
+
+          setInterval(printInfo, 5000);
+        </script>
 </body>
 
 </html>

@@ -52,8 +52,9 @@ const messageHandler = async (topic, payload) => {
 
           const message = {
             title: "Pergerakan Tidak Terautorisasi Terdeteksi",
-            body: `Terdeteksi pergerakan pada kendaraan ${device.vehicleName}.`,
+            body: `Terdeteksi pergerakan pada kendaraan ${device[0].vehicleName} ${device[0].licensePlate}.`,
           };
+
           webpush
             .sendNotification(subData, JSON.stringify(message))
             .catch((err) => {

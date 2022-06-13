@@ -15,6 +15,7 @@ module.exports = (sequelize, Sequelize) => {
     status: {
       type: Sequelize.INTEGER,
       defaultValue: 0,
+      // 0 = not taken, 1 = on progress, 2 = completed
     },
   });
 
