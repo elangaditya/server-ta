@@ -2,7 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../models");
-const { confirmationMail } = require("./mailHandler");
+// const { confirmationMail } = require("./mailHandler");
 
 const User = db.user;
 
@@ -16,11 +16,11 @@ router.get("/register", (req, res) => {
 router.post("/register", async (req, res) => {
   // Validation
   const { error } = registerValidation(req.body);
-  if (error) return res.send(error.details[0].message);
+  if (error) return res.status(400).send(error.details[0].message);
 
   // Pre-exist check
   const emailExist = await User.findOne({ where: { email: req.body.email } });
-  if (emailExist) return res.send("Email already registered");
+  if (emailExist) return res.status(400).send("Email already registered");
 
   // Hashing
   const salt = await bcrypt.genSalt(10);
@@ -50,15 +50,15 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res) => {
   // Validation
   const { error } = loginValidation(req.body);
-  if (error) return res.send(error.details[0].message);
+  if (error) return res.status(400).send(error.details[0].message);
 
   // Email Check
   const user = await User.findOne({ where: { email: req.body.email } });
-  if (!user) return res.send("Invalid email or password");
+  if (!user) return res.status(400).send("Invalid email or password");
 
   // Password Compare
   const validPass = await bcrypt.compare(req.body.password, user.password);
-  if (!validPass) return res.send("Invalid email or password");
+  if (!validPass) return res.status(400).send("Invalid email or password");
 
   // Auth-token
   const token = jwt.sign(

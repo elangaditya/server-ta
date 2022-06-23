@@ -26,7 +26,7 @@ router.get("/dashboard/getdevices", validate, async (req, res) => {
 
 router.get("/dashboard/:deviceID/data", validate, async (req, res) => {
   const locations = await Location.findAll({
-    where: { device_imei: req.params.deviceID },
+    where: { device_imei: req.params.deviceID, user_id: req.user.id },
     raw: true,
   });
 
@@ -93,7 +93,7 @@ router.post("/dashboard/:deviceID/status", validate, async (req, res) => {
       });
       await device.save().then(() => {
         // console.log(data);
-        res.send('OK');
+        res.send("OK");
       });
     },
   );
@@ -155,7 +155,9 @@ router.post("/dashboard/:deviceID/report", validate, async (req, res) => {
       // console.log(data);
       if (data !== null) {
         // console.log('Case exist');
-        const err = new Error("There is already an ongoing case for this vehicle.");
+        const err = new Error(
+          "There is already an ongoing case for this vehicle.",
+        );
         err.code = 400;
         throw err;
       } else {
@@ -177,7 +179,7 @@ router.post("/dashboard/:deviceID/report", validate, async (req, res) => {
     });
 });
 
-router.get('/profile', validate, async (req, res) => {
+router.get("/profile", validate, async (req, res) => {
   await User.findOne({
     where: {
       id: req.user.id,
