@@ -131,7 +131,7 @@ router.post("/pairing", validate, async (req, res) => {
       data.licensePlate = req.body.licensePlate;
       data.color = req.body.color;
       data.save();
-      res.redirect(`/api/dashboard/${req.body.deviceID}`);
+      res.send(data);
     })
     .catch((err) => {
       res.send(err.message);
