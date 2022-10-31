@@ -9,8 +9,6 @@ const session = require("express-session");
 
 dotenv.config();
 
-// test
-
 // eslint-disable-next-line no-unused-vars
 const path = require("path");
 
